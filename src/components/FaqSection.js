@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { COLORS } from '../constants/theme';
+import { COLORS, FONTS } from '../constants/theme';
 import { FAQS_DATA } from '../constants/data';
 import { useResponsive } from '../utils/responsive';
 
 export default function FaqSection() {
   const { isDesktop, isMobile } = useResponsive();
-  const [openIds, setOpenIds] = useState({ 'faq-1': true }); // First FAQ open by default
+  const [openIds, setOpenIds] = useState({});
 
   const toggleFaq = (id) => {
     setOpenIds((prev) => ({
@@ -20,11 +20,9 @@ export default function FaqSection() {
     <View style={styles.sectionWrapper}>
       <View style={styles.container}>
         <View style={[styles.contentRow, !isDesktop && styles.contentColumn]}>
-          {/* Left Column: Heading and info */}
+          {/* Left Column: Heading, description, and View All FAQs button */}
           <View style={[styles.infoCol, !isDesktop && styles.infoColFull]}>
-            <View style={styles.kickerBadge}>
-              <Text style={styles.kickerText}>{FAQS_DATA.kicker}</Text>
-            </View>
+            <Text style={styles.kickerText}>{FAQS_DATA.kicker}</Text>
 
             <Text style={[styles.sectionTitle, isMobile && styles.sectionTitleMobile]}>
               {FAQS_DATA.title}
@@ -33,16 +31,20 @@ export default function FaqSection() {
             <Text style={styles.descriptionText}>{FAQS_DATA.description}</Text>
 
             <Pressable
-              style={styles.viewAllBtn}
+              style={({ hovered, pressed }) => [
+                styles.viewAllBtn,
+                hovered && styles.viewAllBtnHovered,
+                pressed && styles.viewAllBtnPressed,
+              ]}
               accessibilityRole="link"
               accessibilityLabel="View All FAQs"
             >
               <Text style={styles.viewAllBtnText}>{FAQS_DATA.buttonText}</Text>
-              <Feather name="arrow-right" size={15} color={COLORS.primary} />
+              <Feather name="arrow-right" size={15} color="#FFFFFF" />
             </Pressable>
           </View>
 
-          {/* Right Column: Accordion List */}
+          {/* Right Column: Accordion List with plus sign */}
           <View style={[styles.faqCol, !isDesktop && styles.faqColFull]}>
             <View style={styles.accordionContainer}>
               {FAQS_DATA.items.map((item) => {
@@ -51,40 +53,20 @@ export default function FaqSection() {
                 return (
                   <View
                     key={item.id}
-                    style={[
-                      styles.faqItem,
-                      isOpen && styles.faqItemOpen,
-                    ]}
+                    style={[styles.faqItem, isOpen && styles.faqItemOpen]}
                   >
                     <Pressable
-                      style={({ hovered }) => [
-                        styles.faqHeader,
-                        hovered && styles.faqHeaderHovered,
-                      ]}
+                      style={styles.faqHeader}
                       onPress={() => toggleFaq(item.id)}
                       accessibilityRole="button"
                       accessibilityLabel={item.question}
                     >
-                      <Text
-                        style={[
-                          styles.faqQuestion,
-                          isOpen && styles.faqQuestionActive,
-                        ]}
-                      >
-                        {item.question}
-                      </Text>
-                      <View
-                        style={[
-                          styles.chevronCircle,
-                          isOpen && styles.chevronCircleOpen,
-                        ]}
-                      >
-                        <Feather
-                          name={isOpen ? 'chevron-up' : 'chevron-down'}
-                          size={18}
-                          color={isOpen ? COLORS.textWhite : COLORS.textPrimary}
-                        />
-                      </View>
+                      <Text style={styles.faqQuestion}>{item.question}</Text>
+                      <Feather
+                        name={isOpen ? 'minus' : 'plus'}
+                        size={18}
+                        color="#65766A"
+                      />
                     </Pressable>
 
                     {isOpen && (
@@ -106,9 +88,7 @@ export default function FaqSection() {
 const styles = StyleSheet.create({
   sectionWrapper: {
     backgroundColor: '#FFFFFF',
-    paddingVertical: 80,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.borderLight,
+    paddingVertical: 76,
   },
   container: {
     maxWidth: 1240,
@@ -120,7 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    gap: 60,
+    gap: 56,
   },
   contentColumn: {
     flexDirection: 'column',
@@ -133,35 +113,31 @@ const styles = StyleSheet.create({
   infoColFull: {
     width: '100%',
   },
-  kickerBadge: {
-    backgroundColor: COLORS.accentLight,
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    marginBottom: 16,
-  },
   kickerText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: COLORS.accent,
-    letterSpacing: 1,
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#485C31',
+    letterSpacing: 2,
+    marginBottom: 10,
+    textTransform: 'uppercase',
   },
   sectionTitle: {
+    fontFamily: FONTS.serif,
     fontSize: 38,
-    fontWeight: '900',
-    color: COLORS.textDark,
+    fontWeight: '700',
+    color: '#1D261C',
     lineHeight: 46,
-    marginBottom: 18,
-    letterSpacing: -0.5,
+    letterSpacing: -0.3,
+    marginBottom: 16,
   },
   sectionTitleMobile: {
     fontSize: 28,
-    lineHeight: 36,
+    lineHeight: 34,
   },
   descriptionText: {
-    fontSize: 16,
-    lineHeight: 26,
-    color: COLORS.textSecondary,
+    fontSize: 14.5,
+    lineHeight: 24,
+    color: '#5A6B5F',
     marginBottom: 28,
     maxWidth: 440,
   },
@@ -169,18 +145,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: COLORS.primaryBorder,
-    backgroundColor: COLORS.bgLight,
+    backgroundColor: COLORS.primary,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 16,
     cursor: 'pointer',
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.16,
+    shadowRadius: 8,
+  },
+  viewAllBtnHovered: {
+    backgroundColor: COLORS.primaryHover,
+    transform: [{ translateY: -1 }],
+  },
+  viewAllBtnPressed: {
+    transform: [{ translateY: 0 }],
   },
   viewAllBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: COLORS.primary,
+    fontSize: 13.5,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    letterSpacing: 0.2,
   },
   faqCol: {
     flex: 1.1,
@@ -189,67 +175,42 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   accordionContainer: {
-    gap: 14,
+    gap: 12,
   },
   faqItem: {
-    backgroundColor: COLORS.bgLight,
-    borderRadius: 16,
+    backgroundColor: '#F8FAF6',
+    borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#E8EFEA',
+    borderColor: '#E6ECE2',
     overflow: 'hidden',
-    transitionDuration: '200ms',
   },
   faqItemOpen: {
     backgroundColor: '#FFFFFF',
-    borderColor: COLORS.accent,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
-    shadowRadius: 10,
+    borderColor: '#D4DDD1',
   },
   faqHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 18,
-    paddingHorizontal: 22,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
     cursor: 'pointer',
   },
-  faqHeaderHovered: {
-    opacity: 0.9,
-  },
   faqQuestion: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: COLORS.textDark,
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1D261C',
     flex: 1,
-    marginRight: 16,
-  },
-  faqQuestionActive: {
-    color: COLORS.primary,
-  },
-  chevronCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E2ECE5',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  chevronCircleOpen: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    marginRight: 12,
   },
   faqBody: {
-    paddingHorizontal: 22,
-    paddingBottom: 20,
-    paddingTop: 4,
+    paddingHorizontal: 20,
+    paddingBottom: 16,
+    paddingTop: 0,
   },
   faqAnswer: {
-    fontSize: 14,
-    lineHeight: 24,
-    color: COLORS.textSecondary,
+    fontSize: 13,
+    lineHeight: 22,
+    color: '#5A6B5F',
   },
 });

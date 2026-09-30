@@ -7,7 +7,7 @@ export default function FloatingWhatsApp() {
   const [hovered, setHovered] = useState(false);
 
   const handleOpenWhatsApp = () => {
-    Linking.openURL('https://wa.me/97141234567?text=Hi%20Healthify!%20I%20would%20like%20to%20learn%20more%20about%20your%20meal%20plans.');
+    Linking.openURL('https://wa.me/923106733754?text=Hi%20Healthify!%20I%20would%20like%20to%20learn%20more%20about%20your%20meal%20plans.');
   };
 
   return (

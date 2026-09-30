@@ -20,15 +20,15 @@ export default function Footer() {
   const renderSocialIcon = (name) => {
     switch (name) {
       case 'facebook':
-        return <FontAwesome name="facebook-f" size={15} color="#FFFFFF" />;
+        return <FontAwesome name="facebook-f" size={13} color="#FFFFFF" />;
       case 'twitter':
-        return <FontAwesome name="twitter" size={15} color="#FFFFFF" />;
+        return <FontAwesome name="twitter" size={13} color="#FFFFFF" />;
       case 'instagram':
-        return <FontAwesome name="instagram" size={16} color="#FFFFFF" />;
-      case 'linkedin':
-        return <FontAwesome name="linkedin" size={15} color="#FFFFFF" />;
+        return <FontAwesome name="instagram" size={13} color="#FFFFFF" />;
+      case 'youtube':
+        return <FontAwesome name="youtube-play" size={13} color="#FFFFFF" />;
       default:
-        return <Feather name="share-2" size={15} color="#FFFFFF" />;
+        return <Feather name="share-2" size={13} color="#FFFFFF" />;
     }
   };
 
@@ -52,14 +52,9 @@ export default function Footer() {
               isMobile && styles.columnMobile,
             ]}
           >
-            <View style={styles.brandRow}>
-              <View style={styles.logoMarkWrapper}>
-                <Ionicons name="leaf" size={20} color={COLORS.accent} />
-              </View>
-              <View>
-                <Text style={styles.arabicLogo}>صحتك</Text>
-                <Text style={styles.brandTitle}>HEALTHIFY</Text>
-              </View>
+            <View style={styles.brandBox}>
+              <Text style={styles.arabicLogo}>صحتك</Text>
+              <Text style={styles.brandTitle}>HEALTHIFY</Text>
             </View>
 
             <Text style={styles.brandDescription}>{FOOTER_DATA.about}</Text>
@@ -142,23 +137,18 @@ export default function Footer() {
             <Text style={styles.columnHeading}>Get In Touch</Text>
             <View style={styles.contactList}>
               <View style={styles.contactItem}>
-                <Ionicons name="location-outline" size={18} color={COLORS.accent} />
+                <Ionicons name="location-outline" size={16} color="rgba(255, 255, 255, 0.7)" />
                 <Text style={styles.contactText}>{FOOTER_DATA.contact.address}</Text>
               </View>
 
               <View style={styles.contactItem}>
-                <Feather name="phone" size={17} color={COLORS.accent} />
+                <Feather name="phone" size={15} color="rgba(255, 255, 255, 0.7)" />
                 <Text style={styles.contactText}>{FOOTER_DATA.contact.phone}</Text>
               </View>
 
               <View style={styles.contactItem}>
-                <Feather name="mail" size={17} color={COLORS.accent} />
+                <Feather name="mail" size={15} color="rgba(255, 255, 255, 0.7)" />
                 <Text style={styles.contactText}>{FOOTER_DATA.contact.email}</Text>
-              </View>
-
-              <View style={styles.contactItem}>
-                <Feather name="clock" size={17} color={COLORS.accent} />
-                <Text style={styles.contactText}>{FOOTER_DATA.contact.workingHours}</Text>
               </View>
             </View>
           </View>
@@ -183,9 +173,9 @@ export default function Footer() {
 
 const styles = StyleSheet.create({
   footerWrapper: {
-    backgroundColor: COLORS.primaryDark,
-    paddingTop: 70,
-    paddingBottom: 30,
+    backgroundColor: '#132218',
+    paddingTop: 64,
+    paddingBottom: 24,
   },
   container: {
     maxWidth: 1240,
@@ -196,16 +186,16 @@ const styles = StyleSheet.create({
   footerColumns: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 40,
-    marginBottom: 60,
+    gap: 36,
+    marginBottom: 48,
   },
   footerColumnsTablet: {
     flexWrap: 'wrap',
-    gap: 30,
+    gap: 28,
   },
   footerColumnsMobile: {
     flexDirection: 'column',
-    gap: 36,
+    gap: 32,
   },
   column: {
     flex: 1,
@@ -218,117 +208,109 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   brandColumn: {
-    flex: 1.3,
+    flex: 1.2,
   },
-  brandRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
+  brandBox: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
     marginBottom: 16,
   },
-  logoMarkWrapper: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   arabicLogo: {
-    fontSize: 11,
+    fontSize: 14,
     fontWeight: '700',
-    color: COLORS.accent,
-    lineHeight: 12,
+    color: '#FFFFFF',
+    lineHeight: 16,
+    letterSpacing: 0.5,
   },
   brandTitle: {
-    fontSize: 18,
-    fontWeight: '900',
+    fontSize: 11,
+    fontWeight: '800',
     color: '#FFFFFF',
-    letterSpacing: 1.5,
+    letterSpacing: 2,
+    marginTop: -2,
   },
   brandDescription: {
-    fontSize: 13,
-    lineHeight: 22,
-    color: 'rgba(255, 255, 255, 0.7)',
-    marginBottom: 24,
-    maxWidth: 320,
+    fontSize: 12.5,
+    lineHeight: 20,
+    color: 'rgba(255, 255, 255, 0.65)',
+    marginBottom: 20,
+    maxWidth: 280,
   },
   socialIconsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
   },
   socialCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
-    transitionDuration: '150ms',
   },
   socialCircleHovered: {
-    backgroundColor: COLORS.accent,
+    borderColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   columnHeading: {
-    fontSize: 16,
-    fontWeight: '800',
+    fontSize: 14,
+    fontWeight: '700',
     color: '#FFFFFF',
-    marginBottom: 20,
-    letterSpacing: 0.3,
+    marginBottom: 16,
+    letterSpacing: 0.2,
   },
   linksList: {
-    gap: 12,
+    gap: 10,
   },
   linkItem: {
     cursor: 'pointer',
   },
   linkItemHovered: {
-    opacity: 0.8,
+    opacity: 0.85,
   },
   linkText: {
-    fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.75)',
-    lineHeight: 20,
+    fontSize: 12.5,
+    color: 'rgba(255, 255, 255, 0.65)',
+    lineHeight: 18,
   },
   contactList: {
-    gap: 14,
+    gap: 12,
   },
   contactItem: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 10,
   },
   contactText: {
-    fontSize: 13,
-    lineHeight: 20,
+    fontSize: 12.5,
     color: 'rgba(255, 255, 255, 0.75)',
-    flex: 1,
   },
   bottomBar: {
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
-    paddingTop: 24,
+    borderTopColor: 'rgba(255, 255, 255, 0.08)',
+    paddingTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: 16,
+    gap: 14,
   },
   copyrightText: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.5)',
+    fontSize: 11,
+    color: 'rgba(255, 255, 255, 0.45)',
   },
   legalLinksRow: {
     flexDirection: 'row',
-    gap: 20,
+    gap: 18,
   },
   legalLink: {
     cursor: 'pointer',
   },
   legalLinkText: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.5)',
+    fontSize: 11,
+    color: 'rgba(255, 255, 255, 0.45)',
   },
 });

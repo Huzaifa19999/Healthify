@@ -10,16 +10,16 @@ export default function StatsSection() {
 
   const renderIcon = (iconName) => {
     switch (iconName) {
-      case 'utensils':
-        return <Ionicons name="restaurant-outline" size={24} color={COLORS.primary} />;
-      case 'users':
-        return <Feather name="users" size={24} color={COLORS.primary} />;
+      case 'leaf':
+        return <Ionicons name="leaf-outline" size={24} color={COLORS.primary} />;
+      case 'sprout':
+        return <Ionicons name="nutrition-outline" size={24} color={COLORS.primary} />;
       case 'star':
-        return <Ionicons name="star-outline" size={24} color={COLORS.starGold} />;
-      case 'book-open':
-        return <Feather name="book-open" size={24} color={COLORS.primary} />;
+        return <Ionicons name="star-outline" size={24} color={COLORS.primary} />;
+      case 'users':
+        return <Feather name="users" size={22} color={COLORS.primary} />;
       default:
-        return <Feather name="check" size={24} color={COLORS.primary} />;
+        return <Ionicons name="leaf-outline" size={24} color={COLORS.primary} />;
     }
   };
 
@@ -34,17 +34,18 @@ export default function StatsSection() {
           ]}
         >
           {STATS_DATA.map((item, index) => (
-            <View
-              key={item.label}
-              style={[
-                styles.statCard,
-                index < STATS_DATA.length - 1 && !isMobile && styles.statCardBorder,
-              ]}
-            >
-              <View style={styles.iconCircle}>{renderIcon(item.icon)}</View>
-              <Text style={styles.statValue}>{item.value}</Text>
-              <Text style={styles.statLabel}>{item.label}</Text>
-            </View>
+            <React.Fragment key={item.label}>
+              <View style={styles.statCard}>
+                <View style={styles.iconWrapper}>{renderIcon(item.icon)}</View>
+                <View style={styles.textGroup}>
+                  <Text style={styles.statValue}>{item.value}</Text>
+                  <Text style={styles.statLabel}>{item.label}</Text>
+                </View>
+              </View>
+              {index < STATS_DATA.length - 1 && !isMobile && (
+                <View style={styles.verticalDivider} />
+              )}
+            </React.Fragment>
           ))}
         </View>
       </View>
@@ -54,10 +55,11 @@ export default function StatsSection() {
 
 const styles = StyleSheet.create({
   statsWrapper: {
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 36,
+    backgroundColor: '#F7F9F5',
+    paddingVertical: 26,
+    borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.borderLight,
+    borderColor: '#EAEFE8',
   },
   container: {
     maxWidth: 1240,
@@ -77,38 +79,41 @@ const styles = StyleSheet.create({
   },
   statsGridMobile: {
     flexDirection: 'column',
-    gap: 24,
-    alignItems: 'center',
-  },
-  statCard: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 10,
+    gap: 20,
+    alignItems: 'flex-start',
     paddingHorizontal: 16,
   },
-  statCardBorder: {
-    borderRightWidth: 1,
-    borderRightColor: '#EDF2EE',
+  statCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
   },
-  iconCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: COLORS.bgLight,
+  iconWrapper: {
+    width: 38,
+    height: 38,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+  },
+  textGroup: {
+    flexDirection: 'column',
   },
   statValue: {
-    fontSize: 32,
-    fontWeight: '900',
-    color: COLORS.textDark,
-    marginBottom: 4,
-    letterSpacing: -0.5,
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#1D261C',
+    letterSpacing: -0.3,
   },
   statLabel: {
-    fontSize: 14,
-    color: COLORS.textSecondary,
+    fontSize: 12,
+    color: '#65766A',
     fontWeight: '500',
+    marginTop: 1,
+  },
+  verticalDivider: {
+    width: 1,
+    height: 36,
+    backgroundColor: '#DFE6DC',
   },
 });

@@ -1,34 +1,38 @@
 export const COLORS = {
-  primary: '#183B2B',       // Deep forest green for main CTA and headings
-  primaryHover: '#132F22',  // Darker shade for hover states
-  primaryDark: '#0D241A',   // Very deep green for footer
-  primaryLight: '#E8F2EC',  // Soft sage mint tint for badges and icons
-  primaryBorder: '#D2E3D8', // Light mint border
-  accent: '#3E9E56',        // Vibrant fresh green for badges and highlights
-  accentLight: '#EBF7EE',   // Pill tag background
+  primary: '#384628',       // Olive forest green from buttons & CTAs in design
+  primaryHover: '#2A361E',  // Darker olive for hover
+  primaryDark: '#122016',   // Deep forest green for footer
+  primaryLight: '#EEF3EA',  // Pale sage/mint tint
+  primaryBorder: '#D8E2D5', // Light olive border
+  accent: '#4C6134',        // Rich olive accent
+  accentLight: '#EBF1E6',   // Subtle green pill background
   
-  bgLight: '#F7FAF8',       // Light cream/sage section background
+  bgLight: '#F3F6F1',       // Soft sage section background (Advantages, Stats)
   bgCard: '#FFFFFF',        // Pure white card background
-  bgAlt: '#F0F5F2',         // Subtle alternating section background
+  bgAlt: '#F8FAF6',         // Very soft tint
   
-  textDark: '#141E18',      // Near-black dark slate for main titles
-  textPrimary: '#22332A',   // Dark forest slate for body headings
-  textSecondary: '#5A6E63', // Soft muted gray-green for body paragraphs
-  textLight: '#8D9F95',     // Light muted gray for captions and dates
+  textDark: '#1D261C',      // Deep charcoal green for headings
+  textPrimary: '#2B382D',   // Dark forest slate for body
+  textSecondary: '#5A6B5F', // Muted olive-gray for body paragraphs
+  textLight: '#85968A',     // Light muted gray for captions
   textWhite: '#FFFFFF',
   
-  starGold: '#FBBF24',      // Star ratings and badges
-  borderLight: '#E5EDE8',   // Card borders
-  borderHover: '#B8D5C2',
+  kicker: '#485C31',        // Uppercase section kickers
+  starGold: '#EBA525',      // Warm gold for star ratings
+  borderLight: '#E2E8DF',   // Card & section borders
+  borderHover: '#BCCBC0',
   
   whatsapp: '#25D366',      // WhatsApp floating button
 };
 
 export const FONTS = {
-  regular: 'System',
-  medium: 'System',
-  semiBold: 'System',
-  bold: 'System',
+  serif: "'Playfair Display', Georgia, serif",
+  sans: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  script: "'Caveat', cursive",
+  regular: "'Plus Jakarta Sans', sans-serif",
+  medium: "'Plus Jakarta Sans', sans-serif",
+  semiBold: "'Plus Jakarta Sans', sans-serif",
+  bold: "'Plus Jakarta Sans', sans-serif",
 };
 
 export const BREAKPOINTS = {
@@ -36,3 +40,4 @@ export const BREAKPOINTS = {
   tablet: 1024,
   desktop: 1280,
 };
+

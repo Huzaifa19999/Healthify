@@ -1,24 +1,35 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import { Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../constants/theme';
+import { Feather, Ionicons } from '@expo/vector-icons';
+import { COLORS, FONTS } from '../constants/theme';
 import { PRICING_DATA, PRICING_SIDE_CARD } from '../constants/data';
 import { useResponsive } from '../utils/responsive';
 
 export default function PricingSection() {
   const { isDesktop, isTablet, isMobile } = useResponsive();
-  const [selectedPlanId, setSelectedPlanId] = useState('price-2'); // Default to popular
-  const [billingCycle, setBillingCycle] = useState('weekly'); // weekly / monthly toggle
+  const [selectedPlanId, setSelectedPlanId] = useState('price-2');
+
+  const renderIcon = (iconName) => {
+    switch (iconName) {
+      case 'compass':
+      case 'leaf':
+        return <Ionicons name="leaf-outline" size={20} color={COLORS.primary} />;
+      case 'award':
+        return <Ionicons name="ribbon-outline" size={20} color={COLORS.primary} />;
+      case 'bar-chart':
+        return <Ionicons name="bar-chart-outline" size={20} color={COLORS.primary} />;
+      default:
+        return <Ionicons name="checkmark-circle-outline" size={20} color={COLORS.primary} />;
+    }
+  };
 
   return (
     <View nativeID="plans" style={styles.sectionWrapper}>
       <View style={styles.container}>
-        {/* Top Header */}
+        {/* Top Header: Left Title + Right Link */}
         <View style={styles.topHeaderRow}>
           <View style={styles.headerLeft}>
-            <View style={styles.kickerBadge}>
-              <Text style={styles.kickerText}>GROWTH PLANS</Text>
-            </View>
+            <Text style={styles.kickerText}>GROWTH PLANS</Text>
             <Text style={[styles.sectionTitle, isMobile && styles.sectionTitleMobile]}>
               Find the Perfect Plan for You
             </Text>
@@ -30,11 +41,11 @@ export default function PricingSection() {
             accessibilityLabel="View All Plans"
           >
             <Text style={styles.viewAllText}>View All Plans</Text>
-            <Feather name="arrow-right" size={15} color={COLORS.primary} />
+            <Feather name="arrow-right" size={14} color="#384628" />
           </Pressable>
         </View>
 
-        {/* Pricing Cards Grid + Side Highlight Card */}
+        {/* 4 Cards Row: 3 Pricing Plans + 1 Promo Card */}
         <View
           style={[
             styles.cardsLayout,
@@ -44,7 +55,6 @@ export default function PricingSection() {
         >
           {PRICING_DATA.map((plan) => {
             const isPopular = plan.popular;
-            const isSelected = selectedPlanId === plan.id;
 
             return (
               <View
@@ -52,79 +62,70 @@ export default function PricingSection() {
                 style={[
                   styles.pricingCard,
                   isPopular && styles.popularPricingCard,
-                  isSelected && styles.selectedPricingCard,
                   isTablet && styles.pricingCardTablet,
                   isMobile && styles.pricingCardMobile,
                 ]}
               >
-                {/* Popular Badge */}
+                {/* Popular Top Full Banner */}
                 {isPopular && (
-                  <View style={styles.popularBadge}>
-                    <Ionicons name="sparkles" size={13} color="#FFFFFF" />
-                    <Text style={styles.popularBadgeText}>{plan.badge}</Text>
+                  <View style={styles.popularBanner}>
+                    <Text style={styles.popularBannerText}>{plan.badge}</Text>
                   </View>
                 )}
 
-                <View style={styles.cardHeader}>
+                <View style={[styles.cardInner, isPopular && styles.cardInnerPopular]}>
+                  {/* Top Icon */}
+                  <View style={styles.planIconWrapper}>
+                    {renderIcon(plan.icon)}
+                  </View>
+
+                  {/* Title & Subtitle */}
                   <Text style={styles.planName}>{plan.name}</Text>
                   <Text style={styles.planSubtitle}>{plan.subtitle}</Text>
-                </View>
 
-                {/* Price Display */}
-                <View style={styles.priceContainer}>
-                  <Text style={styles.priceValue}>{plan.price}</Text>
-                  <Text style={styles.pricePeriod}>{plan.period}</Text>
-                </View>
+                  {/* Price */}
+                  <View style={styles.priceContainer}>
+                    <Text style={styles.priceValue}>{plan.price}</Text>
+                    <Text style={styles.pricePeriod}>{plan.period}</Text>
+                  </View>
 
-                <View style={styles.divider} />
-
-                {/* Features List */}
-                <View style={styles.featuresList}>
-                  {plan.features.map((feature, fIndex) => (
-                    <View key={fIndex} style={styles.featureItem}>
-                      <View
-                        style={[
-                          styles.checkBadge,
-                          isPopular && styles.checkBadgePopular,
-                        ]}
-                      >
-                        <Feather
-                          name="check"
-                          size={12}
-                          color={isPopular ? COLORS.primary : COLORS.accent}
-                        />
+                  {/* Features List */}
+                  <View style={styles.featuresList}>
+                    {plan.features.map((feature, fIndex) => (
+                      <View key={fIndex} style={styles.featureItem}>
+                        <Feather name="check" size={13} color="#4C6134" />
+                        <Text style={styles.featureText}>{feature}</Text>
                       </View>
-                      <Text style={styles.featureText}>{feature}</Text>
-                    </View>
-                  ))}
-                </View>
+                    ))}
+                  </View>
 
-                {/* CTA Button */}
-                <Pressable
-                  style={({ hovered, pressed }) => [
-                    styles.planCta,
-                    isPopular ? styles.planCtaPopular : styles.planCtaStandard,
-                    hovered && styles.planCtaHovered,
-                    pressed && styles.planCtaPressed,
-                  ]}
-                  onPress={() => setSelectedPlanId(plan.id)}
-                  accessibilityRole="button"
-                  accessibilityLabel={`Select ${plan.name}`}
-                >
-                  <Text
-                    style={[
-                      styles.planCtaText,
-                      isPopular && styles.planCtaTextPopular,
+                  {/* Button */}
+                  <Pressable
+                    style={({ hovered, pressed }) => [
+                      styles.planBtn,
+                      isPopular ? styles.planBtnPopular : styles.planBtnOutline,
+                      hovered && styles.planBtnHovered,
+                      pressed && styles.planBtnPressed,
                     ]}
+                    onPress={() => setSelectedPlanId(plan.id)}
+                    accessibilityRole="button"
+                    accessibilityLabel={plan.buttonText}
                   >
-                    {isSelected ? 'Selected Plan' : plan.buttonText}
-                  </Text>
-                </Pressable>
+                    <Text
+                      style={[
+                        styles.planBtnText,
+                        isPopular ? styles.planBtnTextPopular : styles.planBtnTextOutline,
+                      ]}
+                    >
+                      {plan.buttonText}
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
             );
           })}
 
-          {/* Right Side Visual Promo Card */}
+          {/* Rightmost Visual Image Card: "Invest in a Healthier You" */}
           <View
             style={[
               styles.sideVisualCard,
@@ -138,17 +139,15 @@ export default function PricingSection() {
               resizeMode="cover"
             />
             <View style={styles.sideCardOverlay}>
-              <View style={styles.sideCardTag}>
-                <Ionicons name="leaf" size={14} color={COLORS.accent} />
-                <Text style={styles.sideCardTagText}>Healthify Promise</Text>
-              </View>
-              <Text style={styles.sideCardTitle}>{PRICING_SIDE_CARD.title}</Text>
-              <Text style={styles.sideCardSubtitle}>
-                {PRICING_SIDE_CARD.subtitle} Every calorie accounted for, every bite crafted for vitality.
-              </Text>
-              <View style={styles.sideCardMetric}>
-                <Text style={styles.sideMetricNumber}>100%</Text>
-                <Text style={styles.sideMetricLabel}>Natural Chef Prepared</Text>
+              <View style={styles.sideCardContent}>
+                <Ionicons name="leaf-outline" size={26} color="#FFFFFF" style={styles.sideCardEmblem} />
+                <Text style={styles.sideCardSerifTitle}>
+                  Invest in
+                  {'\n'}
+                  a Healthier
+                  {'\n'}
+                  You
+                </Text>
               </View>
             </View>
           </View>
@@ -160,10 +159,10 @@ export default function PricingSection() {
 
 const styles = StyleSheet.create({
   sectionWrapper: {
-    backgroundColor: COLORS.bgLight,
-    paddingVertical: 80,
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 72,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.borderLight,
+    borderBottomColor: '#EAEFE8',
   },
   container: {
     maxWidth: 1240,
@@ -175,56 +174,47 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    marginBottom: 44,
+    marginBottom: 36,
     flexWrap: 'wrap',
     gap: 16,
   },
   headerLeft: {
     alignItems: 'flex-start',
   },
-  kickerBadge: {
-    backgroundColor: COLORS.accentLight,
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    marginBottom: 12,
-  },
   kickerText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: COLORS.accent,
-    letterSpacing: 1,
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#485C31',
+    letterSpacing: 2,
+    marginBottom: 8,
+    textTransform: 'uppercase',
   },
   sectionTitle: {
-    fontSize: 36,
-    fontWeight: '900',
-    color: COLORS.textDark,
-    letterSpacing: -0.5,
+    fontFamily: FONTS.serif,
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#1D261C',
+    letterSpacing: -0.3,
   },
   sectionTitleMobile: {
-    fontSize: 26,
+    fontSize: 24,
   },
   viewAllBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: COLORS.primaryBorder,
-    backgroundColor: '#FFFFFF',
     cursor: 'pointer',
+    paddingBottom: 4,
   },
   viewAllText: {
     fontSize: 13,
-    fontWeight: '700',
-    color: COLORS.primary,
+    fontWeight: '600',
+    color: '#384628',
   },
   cardsLayout: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 20,
+    gap: 18,
   },
   cardsLayoutTablet: {
     flexWrap: 'wrap',
@@ -237,173 +227,153 @@ const styles = StyleSheet.create({
   pricingCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    borderRadius: 24,
-    padding: 24,
+    borderRadius: 18,
     borderWidth: 1,
-    borderColor: '#E8EFEA',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
+    borderColor: '#E2E8DF',
+    overflow: 'hidden',
     position: 'relative',
-    justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.04,
+    shadowRadius: 10,
   },
   pricingCardTablet: {
     width: '48%',
     flex: 'none',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   pricingCardMobile: {
     width: '100%',
-    maxWidth: 360,
+    maxWidth: 340,
+    marginBottom: 16,
   },
   popularPricingCard: {
-    borderColor: COLORS.accent,
-    borderWidth: 2,
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.12,
-    shadowRadius: 18,
-    transform: [{ translateY: -6 }],
+    borderColor: '#384628',
+    borderWidth: 1.5,
   },
-  selectedPricingCard: {
-    borderColor: COLORS.primary,
-  },
-  popularBadge: {
-    position: 'absolute',
-    top: -14,
-    alignSelf: 'center',
-    backgroundColor: COLORS.primary,
-    flexDirection: 'row',
+  popularBanner: {
+    backgroundColor: '#384628',
+    paddingVertical: 7,
     alignItems: 'center',
-    gap: 6,
-    paddingVertical: 4,
-    paddingHorizontal: 14,
-    borderRadius: 14,
-    zIndex: 10,
+    justifyContent: 'center',
+    width: '100%',
   },
-  popularBadgeText: {
+  popularBannerText: {
     color: '#FFFFFF',
-    fontSize: 11,
-    fontWeight: '800',
-    letterSpacing: 0.5,
+    fontSize: 10.5,
+    fontWeight: '700',
+    letterSpacing: 0.8,
   },
-  cardHeader: {
-    marginBottom: 16,
-    marginTop: 6,
+  cardInner: {
+    padding: 20,
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  cardInnerPopular: {
+    paddingTop: 16,
+  },
+  planIconWrapper: {
+    width: 32,
+    height: 32,
+    marginBottom: 12,
+    justifyContent: 'center',
   },
   planName: {
-    fontSize: 20,
-    fontWeight: '900',
-    color: COLORS.textDark,
-    marginBottom: 6,
+    fontSize: 16.5,
+    fontWeight: '700',
+    color: '#1D261C',
+    marginBottom: 4,
   },
   planSubtitle: {
-    fontSize: 12,
-    lineHeight: 18,
-    color: COLORS.textSecondary,
-    minHeight: 36,
+    fontSize: 11.5,
+    lineHeight: 16,
+    color: '#65766A',
+    marginBottom: 14,
+    minHeight: 32,
   },
   priceContainer: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    marginBottom: 16,
-  },
-  priceValue: {
-    fontSize: 28,
-    fontWeight: '900',
-    color: COLORS.primary,
-    letterSpacing: -0.5,
-  },
-  pricePeriod: {
-    fontSize: 13,
-    color: COLORS.textSecondary,
-    fontWeight: '500',
-    marginLeft: 6,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#EDF2EE',
     marginBottom: 18,
   },
+  priceValue: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#1D261C',
+    letterSpacing: -0.3,
+  },
+  pricePeriod: {
+    fontSize: 12,
+    color: '#65766A',
+    fontWeight: '500',
+    marginLeft: 4,
+  },
   featuresList: {
-    gap: 12,
-    marginBottom: 26,
+    gap: 10,
+    marginBottom: 24,
     flex: 1,
   },
   featureItem: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 10,
-  },
-  checkBadge: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: COLORS.accentLight,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 2,
-  },
-  checkBadgePopular: {
-    backgroundColor: '#D7ECD9',
+    gap: 8,
   },
   featureText: {
-    fontSize: 13,
-    color: COLORS.textPrimary,
-    lineHeight: 20,
-    flex: 1,
+    fontSize: 12,
+    color: '#344437',
+    lineHeight: 16,
   },
-  planCta: {
-    paddingVertical: 12,
-    borderRadius: 20,
+  planBtn: {
+    paddingVertical: 10,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
-    transitionDuration: '200ms',
+    width: '100%',
   },
-  planCtaStandard: {
-    backgroundColor: COLORS.bgLight,
+  planBtnOutline: {
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: COLORS.primaryBorder,
+    borderColor: '#384628',
   },
-  planCtaPopular: {
-    backgroundColor: COLORS.primary,
+  planBtnPopular: {
+    backgroundColor: '#384628',
   },
-  planCtaHovered: {
-    opacity: 0.9,
-    transform: [{ translateY: -1 }],
+  planBtnHovered: {
+    opacity: 0.88,
   },
-  planCtaPressed: {
-    transform: [{ translateY: 1 }],
+  planBtnPressed: {
+    transform: [{ scale: 0.98 }],
   },
-  planCtaText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: COLORS.primary,
+  planBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
   },
-  planCtaTextPopular: {
+  planBtnTextOutline: {
+    color: '#384628',
+  },
+  planBtnTextPopular: {
     color: '#FFFFFF',
   },
   sideVisualCard: {
     flex: 1,
-    borderRadius: 24,
+    borderRadius: 18,
     overflow: 'hidden',
     position: 'relative',
-    minHeight: 380,
+    minHeight: 360,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
   },
   sideVisualCardTablet: {
     width: '48%',
     flex: 'none',
-    minHeight: 380,
+    minHeight: 360,
   },
   sideVisualCardMobile: {
     width: '100%',
-    maxWidth: 360,
+    maxWidth: 340,
     minHeight: 320,
   },
   sideCardImage: {
@@ -413,53 +383,26 @@ const styles = StyleSheet.create({
   },
   sideCardOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(15, 39, 27, 0.82)',
-    padding: 26,
-    justifyContent: 'space-between',
-  },
-  sideCardTag: {
-    flexDirection: 'row',
+    backgroundColor: 'rgba(23, 31, 20, 0.68)',
+    padding: 24,
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    alignSelf: 'flex-start',
   },
-  sideCardTagText: {
-    fontSize: 11,
+  sideCardContent: {
+    alignItems: 'center',
+    textAlign: 'center',
+  },
+  sideCardEmblem: {
+    marginBottom: 12,
+    opacity: 0.9,
+  },
+  sideCardSerifTitle: {
+    fontFamily: FONTS.serif,
+    fontSize: 24,
     fontWeight: '700',
     color: '#FFFFFF',
-  },
-  sideCardTitle: {
-    fontSize: 24,
-    fontWeight: '900',
-    color: '#FFFFFF',
-    lineHeight: 30,
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  sideCardSubtitle: {
-    fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: 20,
-    marginBottom: 20,
-  },
-  sideCardMetric: {
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.2)',
-    paddingTop: 16,
-  },
-  sideMetricNumber: {
-    fontSize: 28,
-    fontWeight: '900',
-    color: COLORS.accent,
-  },
-  sideMetricLabel: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.85)',
-    fontWeight: '600',
-    marginTop: 2,
+    textAlign: 'center',
+    lineHeight: 32,
+    letterSpacing: -0.3,
   },
 });

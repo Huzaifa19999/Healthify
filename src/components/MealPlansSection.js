@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { COLORS } from '../constants/theme';
+import { COLORS, FONTS } from '../constants/theme';
 import { MEAL_PLANS_DATA } from '../constants/data';
 import { useResponsive } from '../utils/responsive';
 
@@ -22,17 +22,24 @@ export default function MealPlansSection() {
   return (
     <View nativeID="services" style={styles.sectionWrapper}>
       <View style={styles.container}>
-        {/* Section Header */}
-        <View style={styles.headerBox}>
-          <View style={styles.kickerBadge}>
+        {/* Section Header: Left Title + Right Link */}
+        <View style={styles.headerRow}>
+          <View style={styles.headerLeft}>
             <Text style={styles.kickerText}>OUR SERVICES</Text>
+            <Text style={[styles.sectionTitle, isMobile && styles.sectionTitleMobile]}>
+              Healthy Meal Plans for Every Lifestyle
+            </Text>
           </View>
-          <Text style={[styles.sectionTitle, isMobile && styles.sectionTitleMobile]}>
-            Healthy Meal Plans for Every Lifestyle
-          </Text>
-          <Text style={styles.subtitleText}>
-            Fresh chef-curated meals crafted with high-grade organic ingredients to match your personal wellness and dietary aspirations.
-          </Text>
+
+          <Pressable
+            style={styles.viewAllBtn}
+            onPress={() => handleSelectPlan('all')}
+            accessibilityRole="link"
+            accessibilityLabel="View All Services"
+          >
+            <Text style={styles.viewAllText}>View All Services</Text>
+            <Feather name="arrow-right" size={14} color="#384628" />
+          </Pressable>
         </View>
 
         {/* 4 Cards Grid */}
@@ -67,9 +74,6 @@ export default function MealPlansSection() {
                     style={styles.planImage}
                     resizeMode="cover"
                   />
-                  <View style={styles.tagBadge}>
-                    <Text style={styles.tagText}>{plan.tag}</Text>
-                  </View>
                 </View>
 
                 {/* Content */}
@@ -77,18 +81,9 @@ export default function MealPlansSection() {
                   <Text style={styles.cardTitle}>{plan.title}</Text>
                   <Text style={styles.cardDescription}>{plan.description}</Text>
 
-                  {/* Circular Action Arrow */}
-                  <View
-                    style={[
-                      styles.arrowButton,
-                      isSelected && styles.arrowButtonSelected,
-                    ]}
-                  >
-                    <Feather
-                      name="arrow-right"
-                      size={16}
-                      color={isSelected ? COLORS.textWhite : COLORS.primary}
-                    />
+                  {/* Circular Action Arrow Bottom Right */}
+                  <View style={styles.arrowButton}>
+                    <Feather name="arrow-right" size={14} color="#384628" />
                   </View>
                 </View>
               </Pressable>
@@ -102,10 +97,10 @@ export default function MealPlansSection() {
 
 const styles = StyleSheet.create({
   sectionWrapper: {
-    backgroundColor: COLORS.bgLight,
-    paddingVertical: 80,
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 72,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.borderLight,
+    borderBottomColor: '#EAEFE8',
   },
   container: {
     maxWidth: 1240,
@@ -113,51 +108,56 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 24,
   },
-  headerBox: {
-    alignItems: 'center',
-    marginBottom: 50,
-    textAlign: 'center',
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 36,
+    flexWrap: 'wrap',
+    gap: 16,
   },
-  kickerBadge: {
-    backgroundColor: COLORS.accentLight,
-    paddingVertical: 5,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    marginBottom: 14,
+  headerLeft: {
+    alignItems: 'flex-start',
   },
   kickerText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: COLORS.accent,
-    letterSpacing: 1,
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#485C31',
+    letterSpacing: 2,
+    marginBottom: 8,
+    textTransform: 'uppercase',
   },
   sectionTitle: {
-    fontSize: 36,
-    fontWeight: '900',
-    color: COLORS.textDark,
-    textAlign: 'center',
-    marginBottom: 14,
-    letterSpacing: -0.5,
+    fontFamily: FONTS.serif,
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#1D261C',
+    letterSpacing: -0.3,
   },
   sectionTitleMobile: {
-    fontSize: 26,
+    fontSize: 24,
   },
-  subtitleText: {
-    fontSize: 15,
-    color: COLORS.textSecondary,
-    textAlign: 'center',
-    maxWidth: 620,
-    lineHeight: 24,
+  viewAllBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    cursor: 'pointer',
+    paddingBottom: 4,
+  },
+  viewAllText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#384628',
   },
   plansGrid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 24,
+    gap: 20,
   },
   plansGridTablet: {
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 24,
+    gap: 20,
   },
   plansGridMobile: {
     flexDirection: 'column',
@@ -167,14 +167,14 @@ const styles = StyleSheet.create({
   planCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    borderRadius: 18,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#E8EFEA',
+    borderColor: '#E2E8DF',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.04,
+    shadowRadius: 10,
     cursor: 'pointer',
     transitionDuration: '200ms',
   },
@@ -187,68 +187,48 @@ const styles = StyleSheet.create({
     maxWidth: 380,
   },
   planCardHovered: {
-    transform: [{ translateY: -4 }],
-    borderColor: COLORS.accent,
-    shadowOpacity: 0.12,
+    transform: [{ translateY: -3 }],
+    borderColor: COLORS.borderHover,
+    shadowOpacity: 0.08,
   },
   planCardSelected: {
     borderColor: COLORS.primary,
-    borderWidth: 2,
   },
   imageContainer: {
     position: 'relative',
     width: '100%',
-    height: 180,
+    height: 150,
     overflow: 'hidden',
   },
   planImage: {
     width: '100%',
     height: '100%',
   },
-  tagBadge: {
-    position: 'absolute',
-    top: 12,
-    left: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.92)',
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    borderRadius: 12,
-  },
-  tagText: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: COLORS.primary,
-  },
   cardContent: {
-    padding: 20,
+    padding: 16,
     alignItems: 'flex-start',
+    position: 'relative',
   },
   cardTitle: {
-    fontSize: 17,
-    fontWeight: '800',
-    color: COLORS.textDark,
-    marginBottom: 8,
-    lineHeight: 22,
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#1D261C',
+    marginBottom: 6,
+    lineHeight: 20,
   },
   cardDescription: {
-    fontSize: 13,
-    lineHeight: 20,
-    color: COLORS.textSecondary,
-    marginBottom: 20,
+    fontSize: 12,
+    lineHeight: 18,
+    color: '#5A6B5F',
+    marginBottom: 16,
   },
   arrowButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: COLORS.bgLight,
-    borderWidth: 1,
-    borderColor: COLORS.borderLight,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#EEF3EA',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-end',
-  },
-  arrowButtonSelected: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
   },
 });

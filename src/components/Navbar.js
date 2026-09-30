@@ -35,13 +35,8 @@ export default function Navbar() {
           accessibilityRole="link"
           accessibilityLabel="Healthify Home"
         >
-          <View style={styles.logoMarkWrapper}>
-            <Ionicons name="leaf" size={20} color={COLORS.accent} />
-          </View>
-          <View style={styles.logoTextWrapper}>
-            <Text style={styles.arabicLogo}>صحتك</Text>
-            <Text style={styles.brandTitle}>HEALTHIFY</Text>
-          </View>
+          <Text style={styles.arabicLogo}>صحتك</Text>
+          <Text style={styles.brandTitle}>HEALTHIFY</Text>
         </Pressable>
 
         {/* Desktop Navigation Links */}
@@ -72,21 +67,6 @@ export default function Navbar() {
 
         {/* Header Right Actions */}
         <View style={styles.rightActions}>
-          {isDesktop && (
-            <Pressable
-              style={({ hovered }) => [
-                styles.langButton,
-                hovered && styles.langButtonHovered,
-              ]}
-              accessibilityRole="button"
-              accessibilityLabel="Change Language"
-            >
-              <Feather name="globe" size={15} color={COLORS.textSecondary} />
-              <Text style={styles.langText}>EN</Text>
-              <Feather name="chevron-down" size={13} color={COLORS.textSecondary} />
-            </Pressable>
-          )}
-
           <Pressable
             style={({ hovered, pressed }) => [
               styles.ctaButton,
@@ -155,7 +135,7 @@ const styles = StyleSheet.create({
   headerWrapper: {
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.borderLight,
+    borderBottomColor: '#EAEFE8',
     position: 'sticky',
     top: 0,
     zIndex: 1000,
@@ -166,87 +146,57 @@ const styles = StyleSheet.create({
     marginHorizontal: 'auto',
     width: '100%',
     paddingHorizontal: 24,
-    height: 76,
+    height: 74,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    cursor: 'pointer',
-  },
-  logoMarkWrapper: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: COLORS.accentLight,
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  logoTextWrapper: {
-    flexDirection: 'column',
+    cursor: 'pointer',
   },
   arabicLogo: {
-    fontSize: 11,
+    fontSize: 14,
     fontWeight: '700',
-    color: COLORS.primary,
-    lineHeight: 12,
+    color: '#1D261C',
+    lineHeight: 16,
     letterSpacing: 0.5,
   },
   brandTitle: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: COLORS.primary,
-    letterSpacing: 1.5,
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#1D261C',
+    letterSpacing: 2,
+    marginTop: -2,
   },
   navLinks: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 28,
+    gap: 24,
   },
   navLinkItem: {
     paddingVertical: 8,
-    paddingHorizontal: 4,
     cursor: 'pointer',
   },
   navLinkItemHovered: {
-    opacity: 0.75,
+    opacity: 0.7,
   },
   navLinkText: {
-    fontSize: 14,
+    fontSize: 13.5,
     fontWeight: '500',
-    color: COLORS.textPrimary,
-    letterSpacing: 0.2,
+    color: '#38463B',
+    letterSpacing: 0.1,
   },
   navLinkTextActive: {
-    color: COLORS.accent,
+    color: COLORS.primary,
     fontWeight: '700',
   },
   rightActions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
-  },
-  langButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: COLORS.borderLight,
-    cursor: 'pointer',
-  },
-  langButtonHovered: {
-    backgroundColor: COLORS.bgLight,
-  },
-  langText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: COLORS.textPrimary,
+    gap: 12,
   },
   ctaButton: {
     flexDirection: 'row',
@@ -255,12 +205,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 25,
+    borderRadius: 999,
     cursor: 'pointer',
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
   },
   ctaButtonHovered: {
     backgroundColor: COLORS.primaryHover,
@@ -268,12 +214,13 @@ const styles = StyleSheet.create({
   },
   ctaButtonPressed: {
     opacity: 0.9,
-    transform: [{ translateY: 1 }],
+    transform: [{ translateY: 0 }],
   },
   ctaButtonText: {
-    color: COLORS.textWhite,
-    fontSize: 14,
+    color: '#FFFFFF',
+    fontSize: 13.5,
     fontWeight: '600',
+    letterSpacing: 0.2,
   },
   menuToggleButton: {
     padding: 6,

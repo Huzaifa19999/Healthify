@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../constants/theme';
+import { COLORS, FONTS } from '../constants/theme';
 import { PROCESS_DATA } from '../constants/data';
 import { useResponsive } from '../utils/responsive';
 
@@ -10,49 +10,48 @@ export default function ProcessSection() {
 
   const renderIcon = (iconName) => {
     switch (iconName) {
-      case 'clipboard-list':
-        return <Feather name="clipboard" size={24} color={COLORS.primary} />;
       case 'utensils':
+        return <Ionicons name="nutrition-outline" size={24} color={COLORS.primary} />;
+      case 'pot':
         return <Ionicons name="restaurant-outline" size={24} color={COLORS.primary} />;
-      case 'package-check':
-        return <Feather name="check-circle" size={24} color={COLORS.primary} />;
+      case 'truck':
+        return <Feather name="truck" size={22} color={COLORS.primary} />;
       default:
-        return <Feather name="activity" size={24} color={COLORS.primary} />;
+        return <Ionicons name="leaf-outline" size={24} color={COLORS.primary} />;
     }
   };
 
   return (
     <View nativeID="process" style={styles.sectionWrapper}>
       <View style={styles.container}>
-        {/* Header */}
-        <View style={styles.headerBox}>
-          <View style={styles.kickerBadge}>
+        {/* Header: Left Title + Right Link */}
+        <View style={styles.headerRow}>
+          <View style={styles.headerLeft}>
             <Text style={styles.kickerText}>{PROCESS_DATA.kicker}</Text>
+            <Text style={[styles.sectionTitle, isMobile && styles.sectionTitleMobile]}>
+              {PROCESS_DATA.title}
+            </Text>
           </View>
-          <Text style={[styles.sectionTitle, isMobile && styles.sectionTitleMobile]}>
-            {PROCESS_DATA.title}
-          </Text>
+
+          <Pressable
+            style={styles.rightLink}
+            accessibilityRole="link"
+            accessibilityLabel={PROCESS_DATA.linkText}
+          >
+            <Text style={styles.rightLinkText}>{PROCESS_DATA.linkText}</Text>
+            <Feather name="arrow-right" size={14} color="#384628" />
+          </Pressable>
         </View>
 
         {/* 3 Steps Row */}
-        <View
-          style={[
-            styles.stepsRow,
-            !isDesktop && styles.stepsColumn,
-          ]}
-        >
+        <View style={[styles.stepsRow, !isDesktop && styles.stepsColumn]}>
           {PROCESS_DATA.steps.map((stepItem, index) => (
             <React.Fragment key={stepItem.step}>
-              <View
-                style={[
-                  styles.stepCard,
-                  !isDesktop && styles.stepCardMobile,
-                ]}
-              >
-                {/* Step Number + Icon Header */}
-                <View style={styles.badgeHeader}>
-                  <View style={styles.stepNumberBadge}>
-                    <Text style={styles.stepNumberText}>{stepItem.step}</Text>
+              <View style={[styles.stepItem, !isDesktop && styles.stepItemMobile]}>
+                {/* Number Circle + Icon Row */}
+                <View style={styles.badgeRow}>
+                  <View style={styles.numberCircle}>
+                    <Text style={styles.numberText}>{stepItem.step}</Text>
                   </View>
                   <View style={styles.iconCircle}>
                     {renderIcon(stepItem.icon)}
@@ -64,11 +63,10 @@ export default function ProcessSection() {
                 <Text style={styles.stepDescription}>{stepItem.description}</Text>
               </View>
 
-              {/* Connecting arrow/divider between cards on desktop */}
+              {/* Connecting arrow between steps on desktop */}
               {isDesktop && index < PROCESS_DATA.steps.length - 1 && (
-                <View style={styles.connectorWrapper}>
-                  <View style={styles.connectorLine} />
-                  <Feather name="chevron-right" size={20} color={COLORS.accent} />
+                <View style={styles.arrowConnector}>
+                  <Feather name="arrow-right" size={20} color="#718274" />
                 </View>
               )}
             </React.Fragment>
@@ -82,9 +80,9 @@ export default function ProcessSection() {
 const styles = StyleSheet.create({
   sectionWrapper: {
     backgroundColor: '#FFFFFF',
-    paddingVertical: 80,
+    paddingVertical: 72,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.borderLight,
+    borderBottomColor: '#EAEFE8',
   },
   container: {
     maxWidth: 1240,
@@ -92,108 +90,105 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 24,
   },
-  headerBox: {
-    alignItems: 'center',
-    marginBottom: 50,
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 44,
+    flexWrap: 'wrap',
+    gap: 16,
   },
-  kickerBadge: {
-    backgroundColor: COLORS.accentLight,
-    paddingVertical: 5,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    marginBottom: 14,
+  headerLeft: {
+    alignItems: 'flex-start',
   },
   kickerText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: COLORS.accent,
-    letterSpacing: 1,
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#485C31',
+    letterSpacing: 2,
+    marginBottom: 8,
+    textTransform: 'uppercase',
   },
   sectionTitle: {
-    fontSize: 36,
-    fontWeight: '900',
-    color: COLORS.textDark,
-    textAlign: 'center',
-    letterSpacing: -0.5,
+    fontFamily: FONTS.serif,
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#1D261C',
+    letterSpacing: -0.3,
   },
   sectionTitleMobile: {
-    fontSize: 26,
+    fontSize: 24,
+  },
+  rightLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    cursor: 'pointer',
+    paddingBottom: 4,
+  },
+  rightLinkText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#384628',
   },
   stepsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 16,
+    gap: 20,
   },
   stepsColumn: {
     flexDirection: 'column',
-    gap: 28,
-  },
-  stepCard: {
-    flex: 1,
-    backgroundColor: COLORS.bgLight,
-    padding: 28,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: '#E8EFEA',
+    gap: 32,
     alignItems: 'flex-start',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 8,
   },
-  stepCardMobile: {
+  stepItem: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  stepItemMobile: {
     width: '100%',
   },
-  badgeHeader: {
+  badgeRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    marginBottom: 20,
+    marginBottom: 16,
   },
-  stepNumberBadge: {
+  numberCircle: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#E0EAD9',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  stepNumberText: {
-    color: '#FFFFFF',
+  numberText: {
+    color: '#384628',
     fontSize: 14,
     fontWeight: '800',
   },
   iconCircle: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: '#FFFFFF',
+    width: 38,
+    height: 38,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#E2EBE5',
   },
   stepTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: COLORS.textDark,
-    marginBottom: 10,
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1D261C',
+    marginBottom: 6,
   },
   stepDescription: {
-    fontSize: 14,
-    lineHeight: 22,
-    color: COLORS.textSecondary,
+    fontSize: 12.5,
+    lineHeight: 18,
+    color: '#5A6B5F',
+    maxWidth: 240,
   },
-  connectorWrapper: {
-    flexDirection: 'row',
+  arrowConnector: {
+    paddingHorizontal: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 8,
-  },
-  connectorLine: {
-    width: 24,
-    height: 2,
-    backgroundColor: '#DFECE3',
   },
 });

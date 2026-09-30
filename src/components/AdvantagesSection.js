@@ -1,25 +1,25 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '../constants/theme';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { Feather, Ionicons } from '@expo/vector-icons';
+import { COLORS, FONTS } from '../constants/theme';
 import { ADVANTAGES_DATA } from '../constants/data';
 import { useResponsive } from '../utils/responsive';
 
 export default function AdvantagesSection() {
-  const { isDesktop, isMobile } = useResponsive();
+  const { isMobile } = useResponsive();
 
   const renderCardIcon = (iconName) => {
     switch (iconName) {
-      case 'award':
-        return <Ionicons name="diamond-outline" size={26} color={COLORS.primary} />;
+      case 'diamond':
+        return <Ionicons name="diamond-outline" size={24} color={COLORS.primary} />;
       case 'heart':
-        return <Ionicons name="heart-outline" size={26} color={COLORS.primary} />;
+        return <Ionicons name="heart-outline" size={24} color={COLORS.primary} />;
       case 'truck':
-        return <Feather name="truck" size={26} color={COLORS.primary} />;
-      case 'calendar':
-        return <Feather name="repeat" size={24} color={COLORS.primary} />;
+        return <Feather name="truck" size={22} color={COLORS.primary} />;
+      case 'leaf':
+        return <Ionicons name="leaf-outline" size={24} color={COLORS.primary} />;
       default:
-        return <Feather name="check" size={24} color={COLORS.primary} />;
+        return <Ionicons name="checkmark" size={22} color={COLORS.primary} />;
     }
   };
 
@@ -35,12 +35,10 @@ export default function AdvantagesSection() {
   return (
     <View nativeID="advantages" style={styles.sectionWrapper}>
       <View style={styles.container}>
-        <View style={[styles.contentRow, !isDesktop && styles.contentColumn]}>
-          {/* Left Column: Heading and narrative */}
-          <View style={[styles.textCol, !isDesktop && styles.textColFull]}>
-            <View style={styles.kickerBadge}>
-              <Text style={styles.kickerText}>{ADVANTAGES_DATA.kicker}</Text>
-            </View>
+        <View style={[styles.horizontalWrapper, isMobile && styles.verticalWrapper]}>
+          {/* Left / Top Narrative Area */}
+          <View style={[styles.textCol, isMobile && styles.textColMobile]}>
+            <Text style={styles.kickerText}>{ADVANTAGES_DATA.kicker}</Text>
 
             <Text style={[styles.sectionTitle, isMobile && styles.sectionTitleMobile]}>
               {ADVANTAGES_DATA.title}
@@ -59,24 +57,25 @@ export default function AdvantagesSection() {
               accessibilityLabel={ADVANTAGES_DATA.buttonText}
             >
               <Text style={styles.actionBtnText}>{ADVANTAGES_DATA.buttonText}</Text>
-              <Feather name="arrow-right" size={16} color={COLORS.textWhite} />
+              <Feather name="arrow-right" size={15} color="#FFFFFF" />
             </Pressable>
           </View>
 
-          {/* Right Column: 2x2 Feature Grid */}
-          <View style={[styles.gridCol, !isDesktop && styles.gridColFull]}>
-            <View style={[styles.gridContainer, isMobile && styles.gridContainerMobile]}>
+          {/* Right / Bottom Horizontal Card Row */}
+          <View style={styles.cardsWrapper}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.horizontalScrollContainer}
+            >
               {ADVANTAGES_DATA.items.map((item) => (
-                <View
-                  key={item.id}
-                  style={[styles.advantageCard, isMobile && styles.advantageCardMobile]}
-                >
+                <View key={item.id} style={styles.advantageCard}>
                   <View style={styles.iconCircle}>{renderCardIcon(item.icon)}</View>
                   <Text style={styles.cardTitle}>{item.title}</Text>
                   <Text style={styles.cardDescription}>{item.description}</Text>
                 </View>
               ))}
-            </View>
+            </ScrollView>
           </View>
         </View>
       </View>
@@ -86,142 +85,128 @@ export default function AdvantagesSection() {
 
 const styles = StyleSheet.create({
   sectionWrapper: {
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 80,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.borderLight,
+    backgroundColor: '#F2F5EE',
+    paddingVertical: 76,
   },
   container: {
     maxWidth: 1240,
     marginHorizontal: 'auto',
     width: '100%',
-    paddingHorizontal: 24,
+    paddingHorizontal: 0,
   },
-  contentRow: {
+  horizontalWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 60,
+    gap: 48,
   },
-  contentColumn: {
+  verticalWrapper: {
     flexDirection: 'column',
-    gap: 40,
+    alignItems: 'flex-start',
+    gap: 36,
   },
   textCol: {
-    flex: 0.9,
+    width: 340,
+    flexShrink: 0,
     alignItems: 'flex-start',
   },
-  textColFull: {
+  textColMobile: {
     width: '100%',
   },
-  kickerBadge: {
-    backgroundColor: COLORS.accentLight,
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    marginBottom: 16,
-  },
   kickerText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: COLORS.accent,
-    letterSpacing: 1,
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#485C31',
+    letterSpacing: 2,
+    marginBottom: 10,
+    textTransform: 'uppercase',
   },
   sectionTitle: {
-    fontSize: 38,
-    fontWeight: '900',
-    color: COLORS.textDark,
-    lineHeight: 46,
-    marginBottom: 18,
-    letterSpacing: -0.5,
+    fontFamily: FONTS.serif,
+    fontSize: 36,
+    fontWeight: '700',
+    color: '#1D261C',
+    lineHeight: 44,
+    letterSpacing: -0.3,
+    marginBottom: 16,
   },
   sectionTitleMobile: {
     fontSize: 28,
-    lineHeight: 36,
+    lineHeight: 34,
   },
   descriptionText: {
-    fontSize: 16,
-    lineHeight: 26,
-    color: COLORS.textSecondary,
-    marginBottom: 32,
-    maxWidth: 460,
+    fontSize: 14.5,
+    lineHeight: 24,
+    color: '#5A6B5F',
+    marginBottom: 28,
   },
   actionBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
     backgroundColor: COLORS.primary,
-    paddingVertical: 14,
-    paddingHorizontal: 26,
-    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 16,
     cursor: 'pointer',
     shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.16,
     shadowRadius: 8,
   },
   actionBtnHovered: {
     backgroundColor: COLORS.primaryHover,
-    transform: [{ translateY: -2 }],
+    transform: [{ translateY: -1 }],
   },
   actionBtnPressed: {
     transform: [{ translateY: 0 }],
   },
   actionBtnText: {
-    color: COLORS.textWhite,
-    fontSize: 14,
-    fontWeight: '700',
+    color: '#FFFFFF',
+    fontSize: 13.5,
+    fontWeight: '600',
+    letterSpacing: 0.2,
   },
-  gridCol: {
-    flex: 1.1,
+  cardsWrapper: {
+    flex: 1,
+    width: '00%',
   },
-  gridColFull: {
-    width: '100%',
-  },
-  gridContainer: {
+  horizontalScrollContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 20,
-  },
-  gridContainerMobile: {
-    flexDirection: 'column',
     gap: 16,
+    paddingVertical: 8,
   },
   advantageCard: {
-    width: '47%',
-    backgroundColor: COLORS.bgLight,
-    padding: 24,
-    borderRadius: 20,
+    width: 220,
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 24,
+    paddingHorizontal: 20,
+    borderRadius: 18,
     borderWidth: 1,
-    borderColor: '#E8EFEA',
+    borderColor: '#E2E8DF',
+    alignItems: 'flex-start',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
+    shadowOpacity: 0.03,
     shadowRadius: 8,
   },
-  advantageCardMobile: {
-    width: '100%',
-  },
   iconCircle: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: '#FFFFFF',
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: '#F3F6F1',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#E5EDE8',
   },
   cardTitle: {
-    fontSize: 17,
-    fontWeight: '800',
-    color: COLORS.textDark,
-    marginBottom: 8,
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#1D261C',
+    marginBottom: 6,
   },
   cardDescription: {
-    fontSize: 13,
-    lineHeight: 20,
-    color: COLORS.textSecondary,
+    fontSize: 12.5,
+    lineHeight: 18,
+    color: '#65766A',
   },
 });
