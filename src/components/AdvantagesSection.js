@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../constants/theme';
 import { ADVANTAGES_DATA } from '../constants/data';
@@ -61,21 +61,15 @@ export default function AdvantagesSection() {
             </Pressable>
           </View>
 
-          {/* Right / Bottom Horizontal Card Row */}
-          <View style={styles.cardsWrapper}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.horizontalScrollContainer}
-            >
-              {ADVANTAGES_DATA.items.map((item) => (
-                <View key={item.id} style={styles.advantageCard}>
-                  <View style={styles.iconCircle}>{renderCardIcon(item.icon)}</View>
-                  <Text style={styles.cardTitle}>{item.title}</Text>
-                  <Text style={styles.cardDescription}>{item.description}</Text>
-                </View>
-              ))}
-            </ScrollView>
+          {/* Right / Static Horizontal Card Row */}
+          <View style={styles.cardsRow}>
+            {ADVANTAGES_DATA.items.map((item) => (
+              <View key={item.id} style={styles.advantageCard}>
+                <View style={styles.iconCircle}>{renderCardIcon(item.icon)}</View>
+                <Text style={styles.cardTitle}>{item.title}</Text>
+                <Text style={styles.cardDescription}>{item.description}</Text>
+              </View>
+            ))}
           </View>
         </View>
       </View>
@@ -92,12 +86,12 @@ const styles = StyleSheet.create({
     maxWidth: 1240,
     marginHorizontal: 'auto',
     width: '100%',
-    paddingHorizontal: 0,
+    paddingHorizontal: 24,
   },
   horizontalWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 48,
+    gap: 40,
   },
   verticalWrapper: {
     flexDirection: 'column',
@@ -105,7 +99,7 @@ const styles = StyleSheet.create({
     gap: 36,
   },
   textCol: {
-    width: 340,
+    width: 300,
     flexShrink: 0,
     alignItems: 'flex-start',
   },
@@ -166,20 +160,19 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: 0.2,
   },
-  cardsWrapper: {
+  cardsRow: {
     flex: 1,
-    width: '00%',
-  },
-  horizontalScrollContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 16,
-    paddingVertical: 8,
+    width: '100%',
   },
   advantageCard: {
-    width: 220,
+    flex: 1,
+    minWidth: 180,
     backgroundColor: '#FFFFFF',
     paddingVertical: 24,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     borderRadius: 18,
     borderWidth: 1,
     borderColor: '#E2E8DF',
@@ -199,13 +192,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardTitle: {
-    fontSize: 15,
+    fontSize: 14.5,
     fontWeight: '700',
     color: '#1D261C',
     marginBottom: 6,
   },
   cardDescription: {
-    fontSize: 12.5,
+    fontSize: 12,
     lineHeight: 18,
     color: '#65766A',
   },
