@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, Image, Pressable } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../constants/theme';
 import { HERO_DATA } from '../constants/data';
@@ -18,117 +18,124 @@ export default function HeroSection() {
   };
 
   return (
-    <View style={styles.sectionWrapper}>
+    <View className="bg-[#F9FAF7] pt-14 pb-16 relative overflow-hidden">
       {/* Decorative leaf branch corner watermarks */}
-      <View style={styles.leafTopLeft}>
+      <View className="absolute -top-5 -left-8 opacity-70" style={{ pointerEvents: 'none' }}>
         <Ionicons name="leaf-outline" size={140} color="rgba(76, 97, 52, 0.04)" />
       </View>
-      <View style={styles.leafTopRight}>
+      <View className="absolute -top-8 -right-8 opacity-60" style={{ pointerEvents: 'none' }}>
         <Ionicons name="leaf-outline" size={180} color="rgba(76, 97, 52, 0.04)" />
       </View>
 
-      <View style={styles.container}>
-        <View style={[styles.contentRow, !isDesktop && styles.contentColumn]}>
+      <View className="max-w-[1240px] w-full px-6 self-center">
+        <View className={`${isDesktop ? 'flex-row items-center justify-between gap-10' : 'flex-col gap-11'}`}>
           {/* Left Column: Headlines & Features */}
-          <View style={[styles.textCol, !isDesktop && styles.textColFull]}>
+          <View className={`${isDesktop ? 'flex-1' : 'w-full'} items-start`} style={{ zIndex: 2 }}>
             {/* Serif Big Headline */}
-            <Text style={[styles.headline, isMobile && styles.headlineMobile]}>
+            <Text
+              style={{ fontFamily: FONTS.serif }}
+              className={`font-bold text-[#1D261C] mb-4 tracking-tight ${isMobile ? 'text-[36px] leading-[42px]' : 'text-[52px] leading-[58px]'}`}
+            >
               {HERO_DATA.headlinePart1}
               {'\n'}
               {HERO_DATA.headlinePart2}
             </Text>
 
             {/* Subheading */}
-            <Text style={styles.subheading}>{HERO_DATA.subheading}</Text>
+            <Text className="text-[16.5px] font-bold text-[#263428] mb-3 tracking-[0.1px]">
+              {HERO_DATA.subheading}
+            </Text>
 
             {/* Paragraph */}
-            <Text style={styles.description}>{HERO_DATA.description}</Text>
+            <Text className="text-[14.5px] leading-6 text-[#55655A] mb-8 max-w-[480px]">
+              {HERO_DATA.description}
+            </Text>
 
             {/* CTA Buttons */}
-            <View style={styles.ctaRow}>
+            <View className="flex-row items-center gap-3.5 mb-9 flex-wrap">
               <Pressable
-                style={({ hovered, pressed }) => [
-                  styles.primaryCta,
-                  hovered && styles.primaryCtaHovered,
-                  pressed && styles.primaryCtaPressed,
-                ]}
+                className="flex-row items-center gap-2 bg-primary py-3 px-6 rounded-2xl shadow-md"
                 onPress={() => handleScroll('#plans')}
                 accessibilityRole="button"
                 accessibilityLabel="Explore Meal Plans"
               >
-                <Text style={styles.primaryCtaText}>{HERO_DATA.ctaPrimary}</Text>
+                <Text className="text-white text-sm font-semibold tracking-[0.2px]">{HERO_DATA.ctaPrimary}</Text>
                 <Feather name="arrow-right" size={16} color="#FFFFFF" />
               </Pressable>
 
               <Pressable
-                style={({ hovered, pressed }) => [
-                  styles.secondaryCta,
-                  hovered && styles.secondaryCtaHovered,
-                  pressed && styles.secondaryCtaPressed,
-                ]}
+                className="py-3 px-6 rounded-2xl bg-white border border-[#D4DDD1]"
                 onPress={() => handleScroll('#about')}
                 accessibilityRole="button"
                 accessibilityLabel="Learn More"
               >
-                <Text style={styles.secondaryCtaText}>{HERO_DATA.ctaSecondary}</Text>
+                <Text className="text-[#2B382D] text-sm font-semibold">{HERO_DATA.ctaSecondary}</Text>
               </Pressable>
             </View>
 
             {/* 3 Horizontal Badges */}
-            <View style={styles.featuresRow}>
-              <View style={styles.featureItem}>
+            <View className="flex-row items-center gap-5 flex-wrap">
+              <View className="flex-row items-center gap-1.5">
                 <Ionicons name="leaf-outline" size={16} color={COLORS.primary} />
-                <Text style={styles.featureLabel}>Fresh Ingredients</Text>
+                <Text className="text-[12.5px] font-medium text-[#475549]">Fresh Ingredients</Text>
               </View>
-
-              <View style={styles.featureItem}>
+              <View className="flex-row items-center gap-1.5">
                 <Ionicons name="shield-checkmark-outline" size={16} color={COLORS.primary} />
-                <Text style={styles.featureLabel}>Nutritionist Approved</Text>
+                <Text className="text-[12.5px] font-medium text-[#475549]">Nutritionist Approved</Text>
               </View>
-
-              <View style={styles.featureItem}>
+              <View className="flex-row items-center gap-1.5">
                 <Ionicons name="car-outline" size={16} color={COLORS.primary} />
-                <Text style={styles.featureLabel}>Delivered to Your Door</Text>
+                <Text className="text-[12.5px] font-medium text-[#475549]">Delivered to Your Door</Text>
               </View>
             </View>
           </View>
 
           {/* Right Column: Circular Food Bowl + Script + Floating Badge */}
-          <View style={[styles.visualCol, !isDesktop && styles.visualColFull]}>
-            <View style={styles.dishFrame}>
+          <View
+            className={`${isDesktop ? 'flex-1' : 'w-full mt-2.5'} items-center justify-center`}
+            style={{ zIndex: 2 }}
+          >
+            <View className="relative w-[440px] h-[440px] max-w-full items-center justify-center">
               {/* Handwritten script note */}
-              <View style={styles.scriptBadge}>
-                <Text style={styles.scriptText}>{HERO_DATA.scriptText}</Text>
+              <View
+                className="absolute top-2.5 left-2.5 items-center"
+                style={{ zIndex: 10, transform: [{ rotate: '-8deg' }] }}
+              >
+                <Text style={{ fontFamily: FONTS.script }} className="text-2xl font-bold text-[#556B3A] leading-6 text-center">
+                  {HERO_DATA.scriptText}
+                </Text>
                 <Ionicons
                   name="arrow-down"
                   size={16}
                   color="#556B3A"
-                  style={styles.scriptArrow}
+                  style={{ marginTop: 2, transform: [{ rotate: '-25deg' }] }}
                 />
               </View>
 
               {/* Main Food Bowl Image */}
-              <View style={styles.imageRing}>
+              <View
+                className="w-[390px] h-[390px] max-w-[92%] rounded-[200px] overflow-hidden bg-[#EAEFE7] border-[6px] border-white"
+                style={{ maxHeight: 390, shadowColor: '#1A3320', shadowOffset: { width: 0, height: 16 }, shadowOpacity: 0.16, shadowRadius: 28 }}
+              >
                 <Image
                   source={{ uri: HERO_DATA.heroImage }}
-                  style={styles.heroImage}
+                  className="w-full h-full"
                   resizeMode="cover"
                   accessibilityLabel="Fresh gourmet chicken salad bowl"
                 />
               </View>
 
               {/* Floating Badge (Bottom Right) */}
-              <View style={styles.floatingBadge}>
-                <View style={styles.floatingIconCircle}>
+              <View
+                className="absolute -bottom-6 -right-3 bg-white py-2.5 px-4 rounded-2xl flex-row items-center gap-3 border border-[#E8EFE5]"
+                style={{ zIndex: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.1, shadowRadius: 16 }}
+              >
+                <View className="w-[34px] h-[34px] rounded-full bg-accent-light items-center justify-center">
                   <Ionicons name="leaf" size={16} color={COLORS.primary} />
                 </View>
                 <View>
-                  <Text style={styles.floatingTitle}>
-                    {HERO_DATA.floatingBadge.title}
-                  </Text>
-                  <Text style={styles.floatingSubtitle}>
-                    {HERO_DATA.floatingBadge.subtitle}
-                  </Text>
+                  <Text className="text-[13px] font-bold text-[#1D261C]">{HERO_DATA.floatingBadge.title}</Text>
+                  <Text className="text-[11px] text-[#697A6E] font-medium">{HERO_DATA.floatingBadge.subtitle}</Text>
                 </View>
               </View>
             </View>
@@ -138,242 +145,3 @@ export default function HeroSection() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionWrapper: {
-    backgroundColor: '#F9FAF7',
-    paddingTop: 54,
-    paddingBottom: 64,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  leafTopLeft: {
-    position: 'absolute',
-    top: -20,
-    left: -30,
-    opacity: 0.7,
-    pointerEvents: 'none',
-  },
-  leafTopRight: {
-    position: 'absolute',
-    top: -30,
-    right: -30,
-    opacity: 0.6,
-    pointerEvents: 'none',
-  },
-  container: {
-    maxWidth: 1240,
-    marginHorizontal: 'auto',
-    width: '100%',
-    paddingHorizontal: 24,
-  },
-  contentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 40,
-  },
-  contentColumn: {
-    flexDirection: 'column',
-    gap: 44,
-  },
-  textCol: {
-    flex: 1.1,
-    alignItems: 'flex-start',
-    zIndex: 2,
-  },
-  textColFull: {
-    width: '100%',
-  },
-  headline: {
-    fontFamily: FONTS.serif,
-    fontSize: 52,
-    fontWeight: '700',
-    color: '#1D261C',
-    lineHeight: 58,
-    letterSpacing: -0.5,
-    marginBottom: 16,
-  },
-  headlineMobile: {
-    fontSize: 36,
-    lineHeight: 42,
-  },
-  subheading: {
-    fontSize: 16.5,
-    fontWeight: '700',
-    color: '#263428',
-    marginBottom: 12,
-    letterSpacing: 0.1,
-  },
-  description: {
-    fontSize: 14.5,
-    lineHeight: 24,
-    color: '#55655A',
-    marginBottom: 32,
-    maxWidth: 480,
-  },
-  ctaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    marginBottom: 36,
-    flexWrap: 'wrap',
-  },
-  primaryCta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    backgroundColor: COLORS.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 26,
-    borderRadius: 16,
-    cursor: 'pointer',
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.18,
-    shadowRadius: 8,
-  },
-  primaryCtaHovered: {
-    backgroundColor: COLORS.primaryHover,
-    transform: [{ translateY: -1 }],
-  },
-  primaryCtaPressed: {
-    transform: [{ translateY: 0 }],
-  },
-  primaryCtaText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '600',
-    letterSpacing: 0.2,
-  },
-  secondaryCta: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 16,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#D4DDD1',
-    cursor: 'pointer',
-  },
-  secondaryCtaHovered: {
-    backgroundColor: '#F3F6F1',
-  },
-  secondaryCtaPressed: {
-    opacity: 0.85,
-  },
-  secondaryCtaText: {
-    color: '#2B382D',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  featuresRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 20,
-    flexWrap: 'wrap',
-  },
-  featureItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  featureLabel: {
-    fontSize: 12.5,
-    fontWeight: '500',
-    color: '#475549',
-  },
-  visualCol: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 2,
-  },
-  visualColFull: {
-    width: '100%',
-    marginTop: 10,
-  },
-  dishFrame: {
-    position: 'relative',
-    width: 440,
-    height: 440,
-    maxWidth: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scriptBadge: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    zIndex: 10,
-    transform: [{ rotate: '-8deg' }],
-    alignItems: 'center',
-  },
-  scriptText: {
-    fontFamily: FONTS.script,
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#556B3A',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  scriptArrow: {
-    marginTop: 2,
-    transform: [{ rotate: '-25deg' }],
-  },
-  imageRing: {
-    width: 390,
-    height: 390,
-    maxWidth: '92%',
-    maxHeight: 390,
-    borderRadius: 200,
-    overflow: 'hidden',
-    backgroundColor: '#EAEFE7',
-    borderWidth: 6,
-    borderColor: '#FFFFFF',
-    shadowColor: '#1A3320',
-    shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.16,
-    shadowRadius: 28,
-  },
-  heroImage: {
-    width: '100%',
-    height: '100%',
-  },
-  floatingBadge: {
-    position: 'absolute',
-    bottom: 24,
-    right: -12,
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.1,
-    shadowRadius: 16,
-    borderWidth: 1,
-    borderColor: '#E8EFE5',
-    zIndex: 10,
-  },
-  floatingIconCircle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: COLORS.accentLight,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  floatingTitle: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#1D261C',
-  },
-  floatingSubtitle: {
-    fontSize: 11,
-    color: '#697A6E',
-    fontWeight: '500',
-  },
-});

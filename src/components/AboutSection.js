@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, Image, Pressable } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../constants/theme';
 import { ABOUT_DATA } from '../constants/data';
@@ -31,87 +31,100 @@ export default function AboutSection() {
   };
 
   return (
-    <View nativeID="about" style={styles.sectionWrapper}>
+    <View nativeID="about" className="bg-white py-20 relative overflow-hidden">
       {/* Decorative leaf branch watermark on the right */}
-      <View style={styles.leafRightWatermark}>
+      <View className="absolute -right-10 top-10 opacity-80" style={{ pointerEvents: 'none' }}>
         <Ionicons name="leaf-outline" size={260} color="rgba(76, 97, 52, 0.03)" />
       </View>
 
-      <View style={styles.container}>
-        <View style={[styles.contentRow, !isDesktop && styles.contentColumn]}>
+      <View className="max-w-[1240px] w-full px-6 self-center">
+        <View className={`${isDesktop ? 'flex-row items-center justify-between gap-14' : 'flex-col gap-10'}`}>
           {/* Left Visual Column: 2 Overlapping Photos + Floating Badge */}
-          <View style={[styles.visualCol, !isDesktop && styles.visualColFull]}>
-            <View style={styles.imageComposition}>
+          <View className={`${isDesktop ? 'flex-1' : 'w-full'} items-center`}>
+            <View className="relative w-[480px] h-[380px] max-w-full">
               {/* Main Top Bowl Photo */}
-              <View style={styles.mainImageWrapper}>
+              <View
+                className="absolute top-0 right-0 w-[330px] h-[250px] rounded-[22px] overflow-hidden"
+                style={{ shadowColor: '#1A3320', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.12, shadowRadius: 18 }}
+              >
                 <Image
                   source={{ uri: ABOUT_DATA.mainImage }}
-                  style={styles.mainImage}
+                  className="w-full h-full"
                   resizeMode="cover"
                   accessibilityLabel="Fresh nutritious healthy meal"
                 />
               </View>
 
               {/* Smaller Bottom-Left Salad Prep Photo */}
-              <View style={styles.subImageWrapper}>
+              <View
+                className="absolute bottom-5 left-0 w-[220px] h-[190px] rounded-[20px] overflow-hidden border-4 border-white"
+                style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.14, shadowRadius: 20 }}
+              >
                 <Image
                   source={{ uri: ABOUT_DATA.subImage }}
-                  style={styles.subImage}
+                  className="w-full h-full"
                   resizeMode="cover"
                   accessibilityLabel="Hands preparing fresh organic salad"
                 />
               </View>
 
               {/* Overlapping Pill Badge */}
-              <View style={styles.nourishBadge}>
-                <View style={styles.nourishIconCircle}>
+              <View
+                className="absolute bottom-[60px] left-[170px] bg-white py-2 px-4 rounded-[20px] flex-row items-center gap-2.5 border border-[#E8EFE5]"
+                style={{ zIndex: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.12, shadowRadius: 14 }}
+              >
+                <View className="w-8 h-8 rounded-full bg-accent-light items-center justify-center">
                   <Ionicons name="leaf" size={15} color={COLORS.primary} />
                 </View>
                 <View>
-                  <Text style={styles.nourishBadgeText}>Nourishing</Text>
-                  <Text style={styles.nourishBadgeText}>Lives Daily</Text>
+                  <Text className="text-[11.5px] font-bold text-[#1D261C] leading-[14px]">Nourishing</Text>
+                  <Text className="text-[11.5px] font-bold text-[#1D261C] leading-[14px]">Lives Daily</Text>
                 </View>
               </View>
             </View>
           </View>
 
           {/* Right Text Column */}
-          <View style={[styles.textCol, !isDesktop && styles.textColFull]}>
+          <View className={`${isDesktop ? 'flex-1' : 'w-full'} items-start`}>
             {/* Kicker */}
-            <Text style={styles.kickerText}>{ABOUT_DATA.kicker}</Text>
+            <Text className="text-[11px] font-bold text-[#485C31] tracking-[2px] mb-3 uppercase">
+              {ABOUT_DATA.kicker}
+            </Text>
 
             {/* Title */}
-            <Text style={[styles.sectionTitle, isMobile && styles.sectionTitleMobile]}>
+            <Text
+              style={{ fontFamily: FONTS.serif }}
+              className={`font-bold text-[#1D261C] tracking-tight mb-4 ${isMobile ? 'text-[30px] leading-9' : 'text-[40px] leading-[46px]'}`}
+            >
               {ABOUT_DATA.title}
             </Text>
 
             {/* Paragraph */}
-            <Text style={styles.descriptionText}>{ABOUT_DATA.description}</Text>
+            <Text className="text-[14.5px] leading-6 text-[#55655A] mb-7 max-w-[500px]">
+              {ABOUT_DATA.description}
+            </Text>
 
             {/* 3 Features in Row with Circular Outline Icons */}
-            <View style={styles.featuresRow}>
+            <View className="flex-row items-center gap-5 mb-8 flex-wrap">
               {ABOUT_DATA.features.map((feature) => (
-                <View key={feature.label} style={styles.featureItem}>
-                  <View style={styles.featureIconCircle}>
+                <View key={feature.label} className="flex-row items-center gap-2">
+                  <View className="w-[30px] h-[30px] rounded-full border border-[#D4DDD1] items-center justify-center bg-white">
                     {renderFeatureIcon(feature.icon)}
                   </View>
-                  <Text style={styles.featureLabel}>{feature.label}</Text>
+                  <Text className="text-[12.5px] font-semibold text-[#2B382D]">{feature.label}</Text>
                 </View>
               ))}
             </View>
 
             {/* CTA Button */}
             <Pressable
-              style={({ hovered, pressed }) => [
-                styles.actionBtn,
-                hovered && styles.actionBtnHovered,
-                pressed && styles.actionBtnPressed,
-              ]}
+              className="flex-row items-center gap-2 bg-primary py-3 px-6 rounded-2xl"
               onPress={handleScrollToServices}
               accessibilityRole="button"
               accessibilityLabel={ABOUT_DATA.buttonText}
+              style={{ shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.16, shadowRadius: 8 }}
             >
-              <Text style={styles.actionBtnText}>{ABOUT_DATA.buttonText}</Text>
+              <Text className="text-white text-[13.5px] font-semibold tracking-[0.2px]">{ABOUT_DATA.buttonText}</Text>
               <Feather name="arrow-right" size={15} color="#FFFFFF" />
             </Pressable>
           </View>
@@ -120,206 +133,3 @@ export default function AboutSection() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionWrapper: {
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 76,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  leafRightWatermark: {
-    position: 'absolute',
-    right: -40,
-    top: 40,
-    opacity: 0.8,
-    pointerEvents: 'none',
-  },
-  container: {
-    maxWidth: 1240,
-    marginHorizontal: 'auto',
-    width: '100%',
-    paddingHorizontal: 24,
-  },
-  contentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 56,
-  },
-  contentColumn: {
-    flexDirection: 'column',
-    gap: 40,
-  },
-  visualCol: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  visualColFull: {
-    width: '100%',
-  },
-  imageComposition: {
-    position: 'relative',
-    width: 480,
-    height: 380,
-    maxWidth: '100%',
-  },
-  mainImageWrapper: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 330,
-    height: 250,
-    borderRadius: 22,
-    overflow: 'hidden',
-    shadowColor: '#1A3320',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.12,
-    shadowRadius: 18,
-  },
-  mainImage: {
-    width: '100%',
-    height: '100%',
-  },
-  subImageWrapper: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    width: 220,
-    height: 190,
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 4,
-    borderColor: '#FFFFFF',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.14,
-    shadowRadius: 20,
-  },
-  subImage: {
-    width: '100%',
-    height: '100%',
-  },
-  nourishBadge: {
-    position: 'absolute',
-    bottom: 60,
-    left: 170,
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 9,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
-    shadowRadius: 14,
-    borderWidth: 1,
-    borderColor: '#E8EFE5',
-    zIndex: 10,
-  },
-  nourishIconCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: COLORS.accentLight,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  nourishBadgeText: {
-    fontSize: 11.5,
-    fontWeight: '700',
-    color: '#1D261C',
-    lineHeight: 14,
-  },
-  textCol: {
-    flex: 1.1,
-    alignItems: 'flex-start',
-  },
-  textColFull: {
-    width: '100%',
-  },
-  kickerText: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#485C31',
-    letterSpacing: 2,
-    marginBottom: 12,
-    textTransform: 'uppercase',
-  },
-  sectionTitle: {
-    fontFamily: FONTS.serif,
-    fontSize: 40,
-    fontWeight: '700',
-    color: '#1D261C',
-    lineHeight: 46,
-    letterSpacing: -0.3,
-    marginBottom: 16,
-  },
-  sectionTitleMobile: {
-    fontSize: 30,
-    lineHeight: 36,
-  },
-  descriptionText: {
-    fontSize: 14.5,
-    lineHeight: 24,
-    color: '#55655A',
-    marginBottom: 28,
-    maxWidth: 500,
-  },
-  featuresRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 20,
-    marginBottom: 32,
-    flexWrap: 'wrap',
-  },
-  featureItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  featureIconCircle: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#D4DDD1',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-  },
-  featureLabel: {
-    fontSize: 12.5,
-    fontWeight: '600',
-    color: '#2B382D',
-  },
-  actionBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    backgroundColor: COLORS.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 16,
-    cursor: 'pointer',
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.16,
-    shadowRadius: 8,
-  },
-  actionBtnHovered: {
-    backgroundColor: COLORS.primaryHover,
-    transform: [{ translateY: -1 }],
-  },
-  actionBtnPressed: {
-    transform: [{ translateY: 0 }],
-  },
-  actionBtnText: {
-    color: '#FFFFFF',
-    fontSize: 13.5,
-    fontWeight: '600',
-    letterSpacing: 0.2,
-  },
-});

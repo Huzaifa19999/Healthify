@@ -1,5 +1,6 @@
+import './global.css';
 import React from 'react';
-import { StyleSheet, View, ScrollView, Platform } from 'react-native';
+import { View, ScrollView, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 // Components
@@ -19,7 +20,7 @@ import FloatingWhatsApp from './src/components/FloatingWhatsApp';
 
 export default function App() {
   return (
-    <View style={styles.appContainer}>
+    <View className="flex-1 bg-white w-full relative">
       <StatusBar style="dark" />
 
       {/* Global Web Styles Injection for Google Fonts & Styles */}
@@ -48,12 +49,6 @@ export default function App() {
               button, a {
                 outline: none;
               }
-              .font-serif {
-                font-family: 'Playfair Display', Georgia, serif !important;
-              }
-              .font-script {
-                font-family: 'Caveat', cursive !important;
-              }
             `,
           }}
         />
@@ -64,8 +59,8 @@ export default function App() {
 
       {/* Main Content Scroll View */}
       <ScrollView
-        style={styles.mainScrollView}
-        contentContainerStyle={styles.scrollContent}
+        className="flex-1 w-full"
+        contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
         <HeroSection />
@@ -86,20 +81,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    width: '100%',
-    minHeight: '100vh',
-    position: 'relative',
-  },
-  mainScrollView: {
-    flex: 1,
-    width: '100%',
-  },
-  scrollContent: {
-    flexGrow: 1,
-  },
-});

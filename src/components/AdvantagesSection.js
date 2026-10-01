@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../constants/theme';
 import { ADVANTAGES_DATA } from '../constants/data';
@@ -33,41 +33,55 @@ export default function AdvantagesSection() {
   };
 
   return (
-    <View nativeID="advantages" style={styles.sectionWrapper}>
-      <View style={styles.container}>
-        <View style={[styles.horizontalWrapper, isMobile && styles.verticalWrapper]}>
+    <View nativeID="advantages" className="bg-[#F2F5EE] py-20">
+      <View className="max-w-[1240px] w-full px-6 self-center">
+        <View className={`${isMobile ? 'flex-col items-start gap-9' : 'flex-row items-center gap-10'}`}>
           {/* Left / Top Narrative Area */}
-          <View style={[styles.textCol, isMobile && styles.textColMobile]}>
-            <Text style={styles.kickerText}>{ADVANTAGES_DATA.kicker}</Text>
+          <View className={`${isMobile ? 'w-full' : 'w-[300px]'} items-start flex-shrink-0`}>
+            <Text className="text-[11px] font-bold text-[#485C31] tracking-[2px] mb-2.5 uppercase">
+              {ADVANTAGES_DATA.kicker}
+            </Text>
 
-            <Text style={[styles.sectionTitle, isMobile && styles.sectionTitleMobile]}>
+            <Text
+              style={{ fontFamily: FONTS.serif }}
+              className={`font-bold text-[#1D261C] tracking-tight mb-4 ${
+                isMobile ? 'text-[28px] leading-[34px]' : 'text-[36px] leading-11'
+              }`}
+            >
               {ADVANTAGES_DATA.title}
             </Text>
 
-            <Text style={styles.descriptionText}>{ADVANTAGES_DATA.description}</Text>
+            <Text className="text-[14.5px] leading-6 text-[#5A6B5F] mb-7">
+              {ADVANTAGES_DATA.description}
+            </Text>
 
             <Pressable
-              style={({ hovered, pressed }) => [
-                styles.actionBtn,
-                hovered && styles.actionBtnHovered,
-                pressed && styles.actionBtnPressed,
-              ]}
+              className="flex-row items-center gap-2 bg-primary py-3 px-6 rounded-2xl"
               onPress={handleScroll}
               accessibilityRole="button"
               accessibilityLabel={ADVANTAGES_DATA.buttonText}
+              style={{ shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.16, shadowRadius: 8 }}
             >
-              <Text style={styles.actionBtnText}>{ADVANTAGES_DATA.buttonText}</Text>
+              <Text className="text-white text-[13.5px] font-semibold tracking-[0.2px]">
+                {ADVANTAGES_DATA.buttonText}
+              </Text>
               <Feather name="arrow-right" size={15} color="#FFFFFF" />
             </Pressable>
           </View>
 
           {/* Right / Static Horizontal Card Row */}
-          <View style={styles.cardsRow}>
+          <View className="flex-1 flex-row flex-wrap gap-4 w-full">
             {ADVANTAGES_DATA.items.map((item) => (
-              <View key={item.id} style={styles.advantageCard}>
-                <View style={styles.iconCircle}>{renderCardIcon(item.icon)}</View>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardDescription}>{item.description}</Text>
+              <View
+                key={item.id}
+                className="flex-1 min-w-[180px] bg-white py-6 px-4 rounded-[18px] border border-[#E2E8DF] items-start"
+                style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.03, shadowRadius: 8 }}
+              >
+                <View className="w-[46px] h-[46px] rounded-full bg-bg-light items-center justify-center mb-4">
+                  {renderCardIcon(item.icon)}
+                </View>
+                <Text className="text-[14.5px] font-bold text-[#1D261C] mb-1.5">{item.title}</Text>
+                <Text className="text-xs leading-[18px] text-[#65766A]">{item.description}</Text>
               </View>
             ))}
           </View>
@@ -76,130 +90,3 @@ export default function AdvantagesSection() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionWrapper: {
-    backgroundColor: '#F2F5EE',
-    paddingVertical: 76,
-  },
-  container: {
-    maxWidth: 1240,
-    marginHorizontal: 'auto',
-    width: '100%',
-    paddingHorizontal: 24,
-  },
-  horizontalWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 40,
-  },
-  verticalWrapper: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: 36,
-  },
-  textCol: {
-    width: 300,
-    flexShrink: 0,
-    alignItems: 'flex-start',
-  },
-  textColMobile: {
-    width: '100%',
-  },
-  kickerText: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#485C31',
-    letterSpacing: 2,
-    marginBottom: 10,
-    textTransform: 'uppercase',
-  },
-  sectionTitle: {
-    fontFamily: FONTS.serif,
-    fontSize: 36,
-    fontWeight: '700',
-    color: '#1D261C',
-    lineHeight: 44,
-    letterSpacing: -0.3,
-    marginBottom: 16,
-  },
-  sectionTitleMobile: {
-    fontSize: 28,
-    lineHeight: 34,
-  },
-  descriptionText: {
-    fontSize: 14.5,
-    lineHeight: 24,
-    color: '#5A6B5F',
-    marginBottom: 28,
-  },
-  actionBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    backgroundColor: COLORS.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 16,
-    cursor: 'pointer',
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.16,
-    shadowRadius: 8,
-  },
-  actionBtnHovered: {
-    backgroundColor: COLORS.primaryHover,
-    transform: [{ translateY: -1 }],
-  },
-  actionBtnPressed: {
-    transform: [{ translateY: 0 }],
-  },
-  actionBtnText: {
-    color: '#FFFFFF',
-    fontSize: 13.5,
-    fontWeight: '600',
-    letterSpacing: 0.2,
-  },
-  cardsRow: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 16,
-    width: '100%',
-  },
-  advantageCard: {
-    flex: 1,
-    minWidth: 180,
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 24,
-    paddingHorizontal: 16,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#E2E8DF',
-    alignItems: 'flex-start',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 8,
-  },
-  iconCircle: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: '#F3F6F1',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  cardTitle: {
-    fontSize: 14.5,
-    fontWeight: '700',
-    color: '#1D261C',
-    marginBottom: 6,
-  },
-  cardDescription: {
-    fontSize: 12,
-    lineHeight: 18,
-    color: '#65766A',
-  },
-});

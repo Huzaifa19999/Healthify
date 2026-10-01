@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import { COLORS, FONTS } from '../constants/theme';
+import { FONTS } from '../constants/theme';
 import { CTA_DATA } from '../constants/data';
 import { useResponsive } from '../utils/responsive';
 
@@ -18,38 +18,46 @@ export default function CtaBanner() {
   };
 
   return (
-    <View style={styles.bannerWrapper}>
+    <View className="bg-primary py-14 relative overflow-hidden w-full">
       {/* Decorative leaf watermarks on left and right */}
-      <View style={styles.leafLeft}>
+      <View className="absolute -left-5 -top-5 opacity-60" style={{ pointerEvents: 'none' }}>
         <Ionicons name="leaf" size={130} color="rgba(255, 255, 255, 0.05)" />
       </View>
-      <View style={styles.leafRight}>
+      <View className="absolute -right-5 -bottom-5 opacity-60" style={{ pointerEvents: 'none' }}>
         <Ionicons name="leaf" size={150} color="rgba(255, 255, 255, 0.05)" />
       </View>
 
-      <View style={styles.container}>
-        <View style={[styles.contentRow, !isDesktop && styles.contentColumn]}>
+      <View className="max-w-[1240px] w-full px-6 self-center" style={{ zIndex: 2 }}>
+        <View
+          className={`${
+            isDesktop
+              ? 'flex-row items-center justify-between gap-8'
+              : 'flex-col items-start gap-6'
+          }`}
+        >
           {/* Left Side: Headline & Subtitle */}
-          <View style={[styles.textGroup, !isDesktop && styles.textGroupFull]}>
-            <Text style={styles.kickerText}>{CTA_DATA.kicker}</Text>
-            <Text style={[styles.headline, isMobile && styles.headlineMobile]}>
+          <View className={`${isDesktop ? 'flex-1' : 'w-full'} items-start`}>
+            <Text className="text-[10.5px] font-bold text-[#CAD8B8] tracking-[2px] mb-2 uppercase">
+              {CTA_DATA.kicker}
+            </Text>
+            <Text
+              style={{ fontFamily: FONTS.serif }}
+              className={`font-bold text-white tracking-tight mb-1.5 ${isMobile ? 'text-[22px]' : 'text-[28px]'}`}
+            >
               {CTA_DATA.headline}
             </Text>
-            <Text style={styles.subheadline}>{CTA_DATA.subheadline}</Text>
+            <Text className="text-[13px] text-[#DFE7D6] leading-5">{CTA_DATA.subheadline}</Text>
           </View>
 
           {/* Right Side: White Pill CTA Button */}
           <Pressable
-            style={({ hovered, pressed }) => [
-              styles.ctaButton,
-              hovered && styles.ctaButtonHovered,
-              pressed && styles.ctaButtonPressed,
-            ]}
+            className="flex-row items-center gap-2 bg-white py-3 px-6 rounded-full"
             onPress={handleCtaPress}
             accessibilityRole="button"
             accessibilityLabel={CTA_DATA.buttonText}
+            style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.15, shadowRadius: 8 }}
           >
-            <Text style={styles.ctaButtonText}>{CTA_DATA.buttonText}</Text>
+            <Text className="text-[#384628] text-[13.5px] font-bold">{CTA_DATA.buttonText}</Text>
             <Feather name="arrow-right" size={15} color="#384628" />
           </Pressable>
         </View>
@@ -57,102 +65,3 @@ export default function CtaBanner() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  bannerWrapper: {
-    backgroundColor: '#384628',
-    paddingVertical: 56,
-    position: 'relative',
-    overflow: 'hidden',
-    width: '100%',
-  },
-  leafLeft: {
-    position: 'absolute',
-    left: -20,
-    top: -20,
-    opacity: 0.6,
-    pointerEvents: 'none',
-  },
-  leafRight: {
-    position: 'absolute',
-    right: -20,
-    bottom: -20,
-    opacity: 0.6,
-    pointerEvents: 'none',
-  },
-  container: {
-    maxWidth: 1240,
-    marginHorizontal: 'auto',
-    width: '100%',
-    paddingHorizontal: 24,
-    zIndex: 2,
-  },
-  contentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 32,
-  },
-  contentColumn: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: 24,
-  },
-  textGroup: {
-    flex: 1,
-    alignItems: 'flex-start',
-  },
-  textGroupFull: {
-    width: '100%',
-  },
-  kickerText: {
-    fontSize: 10.5,
-    fontWeight: '700',
-    color: '#CAD8B8',
-    letterSpacing: 2,
-    marginBottom: 8,
-    textTransform: 'uppercase',
-  },
-  headline: {
-    fontFamily: FONTS.serif,
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    letterSpacing: -0.2,
-    marginBottom: 6,
-  },
-  headlineMobile: {
-    fontSize: 22,
-  },
-  subheadline: {
-    fontSize: 13,
-    color: '#DFE7D6',
-    lineHeight: 20,
-  },
-  ctaButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 999,
-    cursor: 'pointer',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-  },
-  ctaButtonHovered: {
-    backgroundColor: '#F7FAF5',
-    transform: [{ translateY: -1 }],
-  },
-  ctaButtonPressed: {
-    transform: [{ translateY: 0 }],
-  },
-  ctaButtonText: {
-    color: '#384628',
-    fontSize: 13.5,
-    fontWeight: '700',
-  },
-});

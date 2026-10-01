@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Linking } from 'react-native';
-import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { View, Text, Pressable, Linking } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../constants/theme';
 
 export default function FloatingWhatsApp() {
@@ -11,19 +11,30 @@ export default function FloatingWhatsApp() {
   };
 
   return (
-    <View style={styles.floatingContainer}>
+    <View
+      className="flex-row items-center gap-3"
+      style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999 }}
+    >
       {hovered && (
-        <View style={styles.tooltipBox}>
-          <Text style={styles.tooltipText}>Chat with our nutritionist</Text>
+        <View
+          className="bg-text-dark py-2 px-3 rounded-lg"
+          style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.15, shadowRadius: 8 }}
+        >
+          <Text className="text-white text-xs font-semibold">Chat with our nutritionist</Text>
         </View>
       )}
 
       <Pressable
-        style={({ pressed }) => [
-          styles.whatsappButton,
-          hovered && styles.whatsappButtonHovered,
-          pressed && styles.whatsappButtonPressed,
-        ]}
+        className="w-14 h-14 rounded-full items-center justify-center"
+        style={{
+          backgroundColor: hovered ? '#20BA5A' : COLORS.whatsapp,
+          transform: [{ scale: hovered ? 1.08 : 1 }],
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.2,
+          shadowRadius: 10,
+          elevation: 8,
+        }}
         onHoverIn={() => setHovered(true)}
         onHoverOut={() => setHovered(false)}
         onPress={handleOpenWhatsApp}
@@ -35,52 +46,3 @@ export default function FloatingWhatsApp() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  floatingContainer: {
-    position: 'fixed',
-    bottom: 24,
-    right: 24,
-    zIndex: 9999,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  tooltipBox: {
-    backgroundColor: COLORS.textDark,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-  },
-  tooltipText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  whatsappButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: COLORS.whatsapp,
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: 8,
-    transitionDuration: '200ms',
-  },
-  whatsappButtonHovered: {
-    transform: [{ scale: 1.08 }],
-    backgroundColor: '#20BA5A',
-  },
-  whatsappButtonPressed: {
-    transform: [{ scale: 0.95 }],
-  },
-});

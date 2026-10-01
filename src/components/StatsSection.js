@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons, Feather, FontAwesome5 } from '@expo/vector-icons';
+import { View, Text } from 'react-native';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import { COLORS } from '../constants/theme';
 import { STATS_DATA } from '../constants/data';
 import { useResponsive } from '../utils/responsive';
@@ -24,26 +24,30 @@ export default function StatsSection() {
   };
 
   return (
-    <View style={styles.statsWrapper}>
-      <View style={styles.container}>
+    <View className="bg-[#F7F9F5] py-6 border-t border-b border-[#EAEFE8]">
+      <View className="max-w-[1240px] w-full px-6 self-center">
         <View
-          style={[
-            styles.statsGrid,
-            isMobile && styles.statsGridMobile,
-            isTablet && styles.statsGridTablet,
-          ]}
+          className={`${
+            isMobile
+              ? 'flex-col gap-5 items-start px-4'
+              : isTablet
+              ? 'flex-row flex-wrap gap-5 justify-around'
+              : 'flex-row items-center justify-between'
+          }`}
         >
           {STATS_DATA.map((item, index) => (
             <React.Fragment key={item.label}>
-              <View style={styles.statCard}>
-                <View style={styles.iconWrapper}>{renderIcon(item.icon)}</View>
-                <View style={styles.textGroup}>
-                  <Text style={styles.statValue}>{item.value}</Text>
-                  <Text style={styles.statLabel}>{item.label}</Text>
+              <View className="flex-row items-center gap-3.5 py-1.5 px-3">
+                <View className="w-[38px] h-[38px] items-center justify-center">
+                  {renderIcon(item.icon)}
+                </View>
+                <View className="flex-col">
+                  <Text className="text-2xl font-extrabold text-[#1D261C] tracking-tight">{item.value}</Text>
+                  <Text className="text-xs text-[#65766A] font-medium mt-px">{item.label}</Text>
                 </View>
               </View>
               {index < STATS_DATA.length - 1 && !isMobile && (
-                <View style={styles.verticalDivider} />
+                <View className="w-px h-9 bg-[#DFE6DC]" />
               )}
             </React.Fragment>
           ))}
@@ -52,68 +56,3 @@ export default function StatsSection() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  statsWrapper: {
-    backgroundColor: '#F7F9F5',
-    paddingVertical: 26,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#EAEFE8',
-  },
-  container: {
-    maxWidth: 1240,
-    marginHorizontal: 'auto',
-    width: '100%',
-    paddingHorizontal: 24,
-  },
-  statsGrid: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  statsGridTablet: {
-    flexWrap: 'wrap',
-    gap: 20,
-    justifyContent: 'space-around',
-  },
-  statsGridMobile: {
-    flexDirection: 'column',
-    gap: 20,
-    alignItems: 'flex-start',
-    paddingHorizontal: 16,
-  },
-  statCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-  },
-  iconWrapper: {
-    width: 38,
-    height: 38,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textGroup: {
-    flexDirection: 'column',
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#1D261C',
-    letterSpacing: -0.3,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#65766A',
-    fontWeight: '500',
-    marginTop: 1,
-  },
-  verticalDivider: {
-    width: 1,
-    height: 36,
-    backgroundColor: '#DFE6DC',
-  },
-});
